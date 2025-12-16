@@ -1,3 +1,3 @@
-public class Jwfilter{
+public class JwUtil{
     
 }

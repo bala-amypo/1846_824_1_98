@@ -10,7 +10,7 @@ import jakarta.validation.constraints.NotNull;
 public class Course{
     @Id
     @GeneratedValue(strategy=GenerationType.IDENTITY)
-    private int id;
+    private Long id;
     private String title;
     @NotNull
     private String discription;
@@ -25,16 +25,16 @@ public class Course{
     }
 
     public String getdiscription() {
-        return description;
+        return discription;
     }
-    public void setdescription(Long description) {
-        this.description = description;
+    public void setdescription(Long discription) {
+        this.discription = discription;
     }
 
     public String getcategory() {
         return description;
     }
-    public void setcategory(Long category) {
+    public void setcategory(String category) {
         this.category = category;
     }
 
@@ -52,7 +52,7 @@ public class Course{
         this.createdAt=createdAt;
     }
 
-    public Course(Long id,String title,String description,String createdAt,string category){
+    public Course(Long id,String title,String description,String createdAt,String category){
          this.id = id;
          this.title=title;
          this.description=description;

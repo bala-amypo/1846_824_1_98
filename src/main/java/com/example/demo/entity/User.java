@@ -5,6 +5,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.column;
+import jakarta.persistence.NotNull;
 @Entity
 public class User {
     @Id
@@ -15,6 +16,7 @@ public class User {
     private  String email;
     private String password;
     private String role;
+    @NotNull(message="not null")
     private String prefferedLearningStyle;
     private String createdAt;
     public Long getId() {

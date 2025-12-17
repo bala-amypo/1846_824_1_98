@@ -6,6 +6,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.column;
 import jakarta.persistence.NotNull;
+import jakarta.persistence.PrePersist;
 @Entity
 public class User {
     @Id
@@ -18,7 +19,9 @@ public class User {
     private String role;
     @NotNull(message="not null")
     private String prefferedLearningStyle;
+    @PrePersist;
     private String createdAt;
+    private String role;
     public Long getId() {
         return id;
     }
@@ -60,6 +63,8 @@ public class User {
     public void setcreate(String at1){
         this.createdAt=at1;
     }
+
+    public String setrole(Server rol="LEARNER")
 
 
 }

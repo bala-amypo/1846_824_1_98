@@ -15,7 +15,7 @@ public class User {
     private String role;
     private String prefferedLearningStyle;
     private String createdAt;
-    public long getId() {
+    public Long getId() {
         return id;
     }
     public void setId(Long id) {
@@ -50,7 +50,12 @@ public class User {
     public void setprefer(String prefer){
         this.prefferedLearningStyle=prefer;
     }
-    public 
+    public String getcreate(){
+        return createdAt;
+    }
+    public void setcreate(String at1){
+        this.createdAt=at1;
+    }
 
 
 }

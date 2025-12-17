@@ -5,5 +5,5 @@ import com.example.demo.entity.User;
 
 public interface Userservice(){
     User Createuser(User createdAt);
-    
+    List<User>getAllDetails();
 }

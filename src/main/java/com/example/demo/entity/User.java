@@ -47,8 +47,10 @@ public class User {
     public String getprefer(){
         return prefferedLearningStyle;
     }
-    public void set
-
+    public void setprefer(String prefer){
+        this.prefferedLearningStyle=prefer;
+    }
+    public 
 
 
 }

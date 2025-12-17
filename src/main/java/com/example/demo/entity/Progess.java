@@ -1,5 +1,5 @@
 package com.example.demo.entity;
-
+import jakarta.persistence.Column;
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
 import java.time.LocalDateTime;
@@ -68,15 +68,16 @@ public class Progress {
         this.score = score;
     }
 
-    public Micro(Long id,String user,String microLesson,String status,String progressPercent,int lastAccessedAt,
+    public Progress(Long id,String user,String microLesson,String status,String progressPercent,int lastAccessedAt,
     LocalDateTime date,Double score){
          this.id = id;
-         this.user=title;
-         this.contentType=contentType;
-         this.tags=tags;
-         this.course=course;
-         this.diff=diff;
+         this.user=user;
+         this.microLesson=microLesson;
+         this.status=status;
+         this.progressPercent=progressPercent;
+         this.lastAccessedAt=lastAccessedAt;
          this.date=date;
-         this.duration=duration;
+         this.score=score;
 }
+public Progress(){}
 }

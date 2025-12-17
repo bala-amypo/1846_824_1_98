@@ -71,6 +71,13 @@ public class User {
         return role;
     }
     public User(Long id,String fullname,String email,String password,String role,String prefferedLearningStyle,String createdAt){
-
+         this.id = id;
+         this.fullname=name;
+         this.password=pass;
+         this.prefferedLearningStyle=prefer;
+         this.createdAt=at1;
+         this.role=rol;
+         this.email = email;
 }
+public User(){}
 }

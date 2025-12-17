@@ -19,6 +19,7 @@ public class Micro{
     private String tags;
     private int duration;
     private LocalDateTime date;
+
     public Long getId() {
         return id;
     }
@@ -26,10 +27,10 @@ public class Micro{
         this.id = id;
     }
 
-    public Long getdate() {
+    public LocalDateTime getdate() {
         return date;
     }
-    public void setdate(Long id) {
+    public void setdate(Long date) {
         this.date = date;
     }
     
@@ -44,7 +45,7 @@ public class Micro{
     public String getdiff() {
         return diff;
     }
-    public void setdescription(String diff) {
+    public void setdiff(String diff) {
         this.diff = diff;
     }
 
@@ -70,20 +71,23 @@ public class Micro{
         this.title=title;
     }
 
-    public String getcreate(){
+    public String gettags(){
         return tags;
     }
-    public void setcreate(String tags){
+    public void settags(String tags){
         this.tags=tags;
     }
 
-    public Micro(Long id,String title,String contentType,String tags,String course){
+    public Micro(Long id,String title,String contentType,String tags,String course,String diff,
+    LocalDateTime date,int duration){
          this.id = id;
          this.title=title;
          this.contentType=contentType;
          this.tags=tags;
          this.course=course;
-         
+         this.diff=diff;
+         this.date=date;
+         this.duration=duration;
 }
 public Micro(){}
 }

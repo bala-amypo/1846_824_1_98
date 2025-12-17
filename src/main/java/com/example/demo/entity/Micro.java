@@ -57,7 +57,7 @@ public class Micro{
         this.contentType = contentType;
     }
 
-    public String getcourse(String course) {
+    public String getcourse() {
         return course;
     }
     public void setcourse(String course) {

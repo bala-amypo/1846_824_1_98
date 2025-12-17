@@ -1,54 +1,99 @@
 package com.example.demo.entity;
+
+import java.time.LocalDateTime;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
-import jakarta.validation.constraints.Max;
-import jakarta.validation.constraints.Min;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
-import java.time.LocalDateTime;
+import jakarta.persistence.Id;
+import jakarta.persistence.PrePersist;
+import jakarta.persistence.PreUpdate;
+
+import jakarta.validation.constraints.Max;
+import jakarta.validation.constraints.Min;
+
 @Entity
 public class Progress {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private User user;
-    private String microLesson;
+
+    @Column(nullable = false)
+    private Long userId;
+
+    @Column(nullable = false)
+    private Long microLessonId;
+
+    @Column(nullable = false)
     private String status;
+
     @Min(0)
     @Max(100)
     @Column(nullable = false)
     private Integer progressPercent;
 
-    private LocalDateTime lastAccessedAt;
     @Column(nullable = false)
+    private LocalDateTime lastAccessedAt;
+
+    @Column(nullable = true)
     private Double score;
-    
+
+    @PrePersist
+    @PreUpdate
+    private void setLastAccessedAt() {
+        this.lastAccessedAt = LocalDateTime.now();
+    }
+
+    public Progress() {
+    }
+
+    public Progress(
+            Long id,
+            Long userId,
+            Long microLessonId,
+            String status,
+            Integer progressPercent,
+            Double score
+    ) {
+        this.id = id;
+        this.userId = userId;
+        this.microLessonId = microLessonId;
+        this.status = status;
+        this.progressPercent = progressPercent;
+        this.score = score;
+    }
+
     public Long getId() {
         return id;
     }
 
-    public User getUser() {
-        return user;
+    public Long getUserId() {
+        return userId;
     }
 
-    public void setUser(User user) {
-        this.user = user;
+    public void setUserId(Long userId) {
+        this.userId = userId;
     }
 
-    public MicroLesson getMicroLesson() {
-        return microLesson;
+    public Long getMicroLessonId() {
+        return microLessonId;
     }
 
-    public void setMicroLesson(MicroLesson microLesson) {
-        this.microLesson = microLesson;
+    public void setMicroLessonId(Long microLessonId) {
+        this.microLessonId = microLessonId;
     }
 
-    public Status getStatus() {
+    public String getStatus() {
         return status;
     }
 
-    public void setStatus(Status status) {
+    public void setStatus(String status) {
         this.status = status;
+        if ("COMPLETED".equalsIgnoreCase(status)) {
+            this.progressPercent = 100;
+        }
     }
 
     public Integer getProgressPercent() {
@@ -70,17 +115,4 @@ public class Progress {
     public void setScore(Double score) {
         this.score = score;
     }
-
-    public Progress(Long id,String user,String microLesson,String status,String progressPercent,int lastAccessedAt,
-    LocalDateTime date,Double score){
-         this.id = id;
-         this.user=user;
-         this.microLesson=microLesson;
-         this.status=status;
-         this.progressPercent=progressPercent;
-         this.lastAccessedAt=lastAccessedAt;
-         this.date=date;
-         this.score=score;
-}
-public Progress(){}
 }

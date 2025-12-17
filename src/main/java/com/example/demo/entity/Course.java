@@ -27,12 +27,12 @@ public class Course{
     public String getdiscription() {
         return discription;
     }
-    public void setdescription(Long discription) {
+    public void setdescription(String discription) {
         this.discription = discription;
     }
 
-    public String getcategory() {
-        return description;
+    public String getcategory(String category) {
+        return category = category;
     }
     public void setcategory(String category) {
         this.category = category;

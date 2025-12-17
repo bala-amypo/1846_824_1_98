@@ -22,9 +22,11 @@ public class User {
     }
 
     public String getFullname(String name){
-        this.fullname=name;
+        return fullname;
    }
-   public S
+   public void setFullname(String name){
+    this.fullname=name
+   }
 
     public String getEmail() {
         return email;
@@ -33,22 +35,11 @@ public class User {
     public void setEmail(String email) {
         this.email = email;
     }
-
-    public String getPhone() {
-        return phone;
+    public void getpass(){
+        return password;
     }
+    public String pass(){
 
-    public void setPhone(String phone) {
-        this.phone = phone;
     }
-
-    public String getAddress() {
-        return address;
-    }
-
-    public void setAddress(String address) {
-        this.address = address;
-    }
-
 
 }

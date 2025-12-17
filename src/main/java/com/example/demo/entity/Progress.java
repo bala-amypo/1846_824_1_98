@@ -1,7 +1,10 @@
 package com.example.demo.entity;
 import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
 import java.time.LocalDateTime;
 @Entity
 public class Progress {
@@ -9,7 +12,7 @@ public class Progress {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private User user;
-    private MicroLesson microLesson;
+    private String microLesson;
     private String status;
     @Min(0)
     @Max(100)

@@ -13,11 +13,12 @@ public class Micro{
     @GeneratedValue(strategy=GenerationType.IDENTITY)
     private Long id;
     private String title;
-    @NotNull
-    private String discription;
+    private String diff;
+    private String contentType;
     private String course;
-    private String createdAt;
-    
+    private String tags;
+    private int duration;
+    private LocalDateTime date;
     public Long getId() {
         return id;
     }
@@ -25,11 +26,34 @@ public class Micro{
         this.id = id;
     }
 
-    public String getdiscription() {
-        return discription;
+    public Long getdate() {
+        return date;
     }
-    public void setdescription(String discription) {
-        this.discription = discription;
+    public void setdate(Long id) {
+        this.date = date;
+    }
+    
+
+    public int getduration() {
+        return duration;
+    }
+    public void setduration(Long duration) {
+        this.duration = duration;
+    }
+
+    public String getdiff() {
+        return diff;
+    }
+    public void setdescription(String diff) {
+        this.diff = diff;
+    }
+
+
+    public String getcontentType() {
+        return contentType;
+    }
+    public void setcontentType(String contentType) {
+        this.contentType = contentType;
     }
 
     public String getcourse(String course) {
@@ -47,19 +71,19 @@ public class Micro{
     }
 
     public String getcreate(){
-        return createdAt;
+        return tags;
     }
-    public void setcreate(String createdAt){
-        this.createdAt=createdAt;
+    public void setcreate(String tags){
+        this.tags=tags;
     }
 
-    public Course(Long id,String title,String discription,String createdAt,String course){
+    public Micro(Long id,String title,String contentType,String tags,String course){
          this.id = id;
          this.title=title;
-         this.discription=discription;
-         this.createdAt=createdAt;
+         this.contentType=contentType;
+         this.tags=tags;
          this.course=course;
          
 }
-public Course(){}
+public Micro(){}
 }

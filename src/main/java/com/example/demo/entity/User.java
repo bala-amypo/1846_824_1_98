@@ -5,7 +5,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Column;
-import jakarta.persistence.NotNull;
+import jakarta.validation.constraints.NotNull;
 import jakarta.persistence.PrePersist;
 @Entity
 public class User {
@@ -20,7 +20,6 @@ public class User {
     @NotNull(message="not null")
     private String prefferedLearningStyle;
     private String createdAt;
-    private String role;
     public Long getId() {
         return id;
     }
@@ -63,10 +62,10 @@ public class User {
         this.createdAt=createdAt;
     }
 
-    public String setrole(String role){
+    public void setrole(String role){
         this.role=role;
     }
-    public void getrole(){
+    public String getrole(){
         return role;
     }
     public User(Long id,String fullname,String email,String password,String role,String prefferedLearningStyle,String createdAt){

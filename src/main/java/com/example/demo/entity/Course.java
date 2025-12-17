@@ -38,6 +38,13 @@ public class Course{
         this.category = category;
     }
 
+    public String gettitle(){
+        return title;
+    }
+    public void settitle(String title){
+        this.title=title;
+    }
+
     public String getcreate(){
         return createdAt;
     }
@@ -45,14 +52,13 @@ public class Course{
         this.createdAt=createdAt;
     }
 
-    public User(Long id,String role,String prefferedLearningStyle,String createdAt){
+    public Course(Long id,String description,String description,String createdAt){
          this.id = id;
-         this.fullname=fullname;
-         this.password=password;
-         this.prefferedLearningStyle=prefferedLearningStyle;
+         this.title=title;
+         this.description=description;
          this.createdAt=createdAt;
-         this.role=role;
-         this.email = email;
+         this.description=description;
+         
 }
-public User(){}
+public Course(){}
 }

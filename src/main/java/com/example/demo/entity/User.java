@@ -12,11 +12,12 @@ public class User {
     private  String fullname;
     private  String email;
     private String password;
-
+    private String role;
+    private String prefferedLearningStyle;
+    private String createdAt;
     public long getId() {
         return id;
     }
-
     public void setId(Long id) {
         this.id = id;
     }
@@ -35,11 +36,19 @@ public class User {
     public void setEmail(String email) {
         this.email = email;
     }
-    public void getpass(){
+
+    public String getpass(){
         return password;
     }
-    public String pass(String pass){
-        this.password=pass
+    public void setpass(String pass){
+        this.password=pass;
     }
+
+    public String getprefer(){
+        return prefferedLearningStyle;
+    }
+    public void set
+
+
 
 }

@@ -5,7 +5,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.validation.constraints.NotNull;
-import jakarta.LocalDateTime;
+import java.Time.LocalDateTime;
 
 @Entity
 public class Micro{
@@ -30,7 +30,7 @@ public class Micro{
     public LocalDateTime getdate() {
         return date;
     }
-    public void setdate(Long date) {
+    public void setdate(LocalDateTime date) {
         this.date = date;
     }
     
@@ -38,7 +38,7 @@ public class Micro{
     public int getduration() {
         return duration;
     }
-    public void setduration(Long duration) {
+    public void setduration(int duration) {
         this.duration = duration;
     }
 

@@ -27,14 +27,14 @@ public class Course{
     public Long getdiscription() {
         return description;
     }
-    public void setId(Long id) {
+    public void setdescription(Long description) {
         this.description = description;
     }
 
     public Long getcategory() {
         return description;
     }
-    public void setcategory(Long id) {
+    public void setcategory(Long category) {
         this.category = category;
     }
 
@@ -52,12 +52,12 @@ public class Course{
         this.createdAt=createdAt;
     }
 
-    public Course(Long id,String description,String description,String createdAt){
+    public Course(Long id,String title,String description,String createdAt,string category){
          this.id = id;
          this.title=title;
          this.description=description;
          this.createdAt=createdAt;
-         this.description=description;
+         this.category=category;
          
 }
 public Course(){}

@@ -10,8 +10,6 @@ public class Progress {
     private Long id;
     private User user;
     private MicroLesson microLesson;
- 
-    @Column(nullable = false)
     private String status;
     @Min(0)
     @Max(100)
@@ -19,7 +17,7 @@ public class Progress {
     private Integer progressPercent;
 
     private LocalDateTime lastAccessedAt;
-
+    @Column(nullable = false)
     private Double score;
     
     public Long getId() {
@@ -70,5 +68,15 @@ public class Progress {
         this.score = score;
     }
 
-    public Progress()
+    public Micro(Long id,String user,String microLesson,String status,String progressPercent,int lastAccessedAt,
+    LocalDateTime date,Double score){
+         this.id = id;
+         this.user=title;
+         this.contentType=contentType;
+         this.tags=tags;
+         this.course=course;
+         this.diff=diff;
+         this.date=date;
+         this.duration=duration;
+}
 }

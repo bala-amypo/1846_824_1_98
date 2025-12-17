@@ -32,7 +32,7 @@ public class Course{
     }
 
     public String getcategory(String category) {
-        return category = category;
+        return category;
     }
     public void setcategory(String category) {
         this.category = category;
@@ -52,10 +52,10 @@ public class Course{
         this.createdAt=createdAt;
     }
 
-    public Course(Long id,String title,String description,String createdAt,String category){
+    public Course(Long id,String title,String discription,String createdAt,String category){
          this.id = id;
          this.title=title;
-         this.description=description;
+         this.discription=discription;
          this.createdAt=createdAt;
          this.category=category;
          

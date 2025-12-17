@@ -19,7 +19,7 @@ public class User {
     private String role;
     @NotNull(message="not null")
     private String prefferedLearningStyle;
-    @PrePersist;
+    @PrePersist
     private String createdAt;
     private String role;
     public Long getId() {
@@ -33,7 +33,7 @@ public class User {
         return fullname;
    }
    public void setFullname(String name){
-    this.fullname=name
+    this.fullname=name;
    }
 
     public String getEmail() {
@@ -64,8 +64,8 @@ public class User {
         this.createdAt=at1;
     }
 
-    public String setrole(Server rol="LEARNER"){
-        this.role=rol;
+    public String setrole(String role="LEARNER"){
+        this.role=role;
     }
     public void getrole(){
         return role;

@@ -2,14 +2,13 @@ package com.example.demo.entity
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.
+
 public class user {
     private Long id;
-    private  String name;
+    private  String fullname;
     private  String email;
-    private  String phone;
-    private  String address;
+    private String password;
 
     public long getId() {
         return id;

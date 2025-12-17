@@ -5,7 +5,8 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.validation.constraints.NotNull;
-import java.Time.LocalDateTime;
+import jakarta.validation.constraints.Size;
+import java.time.LocalDateTime;
 
 @Entity
 public class Micro{
@@ -17,6 +18,7 @@ public class Micro{
     private String contentType;
     private String course;
     private String tags;
+    @Size(min=1,max=15)
     private int duration;
     private LocalDateTime date;
 

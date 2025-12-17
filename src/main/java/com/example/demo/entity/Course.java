@@ -24,7 +24,7 @@ public class Course{
         this.id = id;
     }
 
-    public Long getdiscription() {
+    public String getdiscription() {
         return description;
     }
     public void setdescription(Long description) {

@@ -19,7 +19,6 @@ public class User {
     private String role;
     @NotNull(message="not null")
     private String prefferedLearningStyle;
-    @PrePersist
     private String createdAt;
     private String role;
     public Long getId() {
@@ -29,11 +28,11 @@ public class User {
         this.id = id;
     }
 
-    public String getFullname(String name){
+    public String getFullname(String fullname){
         return fullname;
    }
-   public void setFullname(String name){
-    this.fullname=name;
+   public void setFullname(String fullname){
+    this.fullname=fullname;
    }
 
     public String getEmail() {
@@ -47,24 +46,24 @@ public class User {
     public String getpass(){
         return password;
     }
-    public void setpass(String pass){
-        this.password=pass;
+    public void setpass(String password){
+        this.password=password;
     }
 
     public String getprefer(){
         return prefferedLearningStyle;
     }
-    public void setprefer(String prefer){
-        this.prefferedLearningStyle=prefer;
+    public void setprefer(String prefferedLearningStyle){
+        this.prefferedLearningStyle=prefferedLearningStyle;
     }
     public String getcreate(){
         return createdAt;
     }
-    public void setcreate(String at1){
-        this.createdAt=at1;
+    public void setcreate(String createdAt){
+        this.createdAt=createdAt;
     }
 
-    public String setrole(String role="LEARNER"){
+    public String setrole(String role){
         this.role=role;
     }
     public void getrole(){
@@ -72,11 +71,11 @@ public class User {
     }
     public User(Long id,String fullname,String email,String password,String role,String prefferedLearningStyle,String createdAt){
          this.id = id;
-         this.fullname=name;
-         this.password=pass;
-         this.prefferedLearningStyle=prefer;
-         this.createdAt=at1;
-         this.role=rol;
+         this.fullname=fullname;
+         this.password=password;
+         this.prefferedLearningStyle=prefferedLearningStyle;
+         this.createdAt=createdAt;
+         this.role=role;
          this.email = email;
 }
 public User(){}

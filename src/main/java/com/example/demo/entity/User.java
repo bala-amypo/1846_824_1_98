@@ -38,8 +38,8 @@ public class User {
     public void getpass(){
         return password;
     }
-    public String pass(){
-
+    public String pass(String pass){
+        this.password=pass
     }
 
 }

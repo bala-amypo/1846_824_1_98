@@ -4,7 +4,7 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.column;
+import jakarta.persistence.Column;
 import jakarta.persistence.NotNull;
 import jakarta.persistence.PrePersist;
 @Entity
@@ -13,7 +13,7 @@ public class User {
     @GeneratedValue(strategy=GenerationType.IDENTITY)
     private Long id;
     private  String fullname;
-    @column(unique=true)
+    @Column(unique=true)
     private  String email;
     private String password;
     private String role;
@@ -64,7 +64,13 @@ public class User {
         this.createdAt=at1;
     }
 
-    public String setrole(Server rol="LEARNER")
+    public String setrole(Server rol="LEARNER"){
+        this.role=rol;
+    }
+    public void getrole(){
+        return role;
+    }
+    public User(Long id,String fullname,String email,String password,String role,String prefferedLearningStyle,String createdAt){
 
-
+}
 }

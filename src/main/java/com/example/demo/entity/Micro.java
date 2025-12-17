@@ -16,9 +16,9 @@ public class Micro{
     @GeneratedValue(strategy=GenerationType.IDENTITY)
     private Long id;
     private String title;
-    @Enumerated(EnumType.STRING)
+  
     private String diff;
-    @Enumerated(EnumType.STRING)
+    
     private String contentType;
     private String course;
     private String tags;

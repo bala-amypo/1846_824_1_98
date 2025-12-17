@@ -31,7 +31,7 @@ public class Course{
         this.description = description;
     }
 
-    public Long getcategory() {
+    public String getcategory() {
         return description;
     }
     public void setcategory(Long category) {

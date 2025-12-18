@@ -1,19 +1,37 @@
 package com.example.demo.dto;
 
-public class AuthResponse {
-    private String message;
-    private boolean success;
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotNull;
 
-    public AuthResponse(String message, boolean success) {
-        this.message = message;
-        this.success = success;
+public class AuthRequest {
+
+    @Email
+    @NotNull
+    private String email;
+
+    @NotNull
+    private String password;
+
+    public AuthRequest() {}
+
+    public AuthRequest(String email, String password) {
+        this.email = email;
+        this.password = password;
     }
 
-    public String getMessage() {
-        return message;
+    public String getEmail() {
+        return email;
     }
 
-    public boolean isSuccess() {
-        return success;
+    public String getPassword() {
+        return password;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
     }
 }

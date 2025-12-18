@@ -17,10 +17,10 @@ public class Userimpl implements Userservice {
     public User findById(Long id){
         return urp.findById(id).orElse(Null);
     }
-    public findByEmail(String email){
+    public User findByEmail(String email){
         return urp.findByEmail(email);
     }
-    public AuthResponse(String email,String password){
+    public AuthResponse login(String email,String password){
         User user=urp.findByEmail(email);
         if(user==null){
             return new AuthResponse("User not found",false);

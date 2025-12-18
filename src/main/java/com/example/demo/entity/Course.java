@@ -1,13 +1,16 @@
 package com.example.demo.entity;
 
+import java.time.LocalDateTime;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.PrePersist;
 import jakarta.validation.constraints.NotNull;
 
 @Entity
-public class Course{
+public class Course {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -16,14 +19,19 @@ public class Course{
     @NotNull
     private String title;
 
-    @NotNull
     private String description;
 
     private String category;
 
-    private String createdAt;
+    private LocalDateTime createdAt;
 
+    @NotNull
     private Long instructorId;
+
+    @PrePersist
+    public void prePersist() {
+        this.createdAt = LocalDateTime.now();
+    }
 
     public Long getId() {
         return id;
@@ -57,12 +65,8 @@ public class Course{
         this.category = category;
     }
 
-    public String getCreatedAt() {
+    public LocalDateTime getCreatedAt() {
         return createdAt;
-    }
-
-    public void setCreatedAt(String createdAt) {
-        this.createdAt = createdAt;
     }
 
     public Long getInstructorId() {
@@ -77,12 +81,11 @@ public class Course{
     }
 
     public Course(Long id, String title, String description,
-                  String category, String createdAt, Long instructorId) {
+                  String category, Long instructorId) {
         this.id = id;
         this.title = title;
         this.description = description;
         this.category = category;
-        this.createdAt = createdAt;
         this.instructorId = instructorId;
     }
 }

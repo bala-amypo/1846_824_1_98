@@ -21,6 +21,7 @@ public class Userimpl implements Userservice {
         return urp.findByEmail(email);
     }
     public AuthResponse(String email,String password){
-        
+        User user=urp.findByEmail(email);
+        if()
     }
 }

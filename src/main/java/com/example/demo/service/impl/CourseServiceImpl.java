@@ -1,11 +1,14 @@
 package com.example.demo.service.impl;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import com.example.demo.service.Courseservice;
-import com.example.demo.repo.CourseRepository;
+
 import com.example.demo.entity.Course;
-import java.util.List;
+import com.example.demo.repo.CourseRepository;
+import com.example.demo.service.Courseservice;
+
 @Service
 public class CourseServiceImpl implements Courseservice {
 
@@ -14,13 +17,15 @@ public class CourseServiceImpl implements Courseservice {
 
     @Override
     public Course createCourse(Course course, Long instructorId) {
-        course1.setInstructorId(instructorId);
+        course.setInstructorId(instructorId);
         return course1.save(course);
     }
+
     @Override
-    public Course updateCourse(Long courseId, Course course){
-        Course exist=getCourse(courseId);
-         if (exist != null) {
+    public Course updateCourse(Long courseId, Course course) {
+        Course exist = getCourse(courseId);
+
+        if (exist != null) {
             exist.setTitle(course.getTitle());
             exist.setDescription(course.getDescription());
             exist.setCategory(course.getCategory());
@@ -28,20 +33,27 @@ public class CourseServiceImpl implements Courseservice {
         }
         return null;
     }
+
     @Override
-    public Course delete12(Long courseId){
-        Course exist=getCourse(courseId);
-        if(exist!=null){
+    public void deleteCourse(Long courseId) {
+        Course exist = getCourse(courseId);
+        if (exist != null) {
             course1.delete(exist);
         }
     }
+
     @Override
     public List<Course> listCoursesByInstructor(Long instructorId) {
         return course1.findByInstructorId(instructorId);
     }
 
-     @Override
+    @Override
+    public Course getCourse(Long courseId) {
+        return course1.findById(courseId).orElse(null);
+    }
+
+    @Override
     public List<Course> getAllCourses() {
-        return courseRepo.findAll();
+        return course1.findAll();
     }
 }

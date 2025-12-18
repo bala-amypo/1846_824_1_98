@@ -1,63 +1,42 @@
 package com.example.demo.entity;
+
 import java.time.LocalDateTime;
+
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.PrePersist;
-import jakarta.validation.constraints.NotNull;
-
-
-import jakarta.validation.constraints.NotBlank;
-
 
 @Entity
-@Table(
-    name = "course",
-    uniqueConstraints = {
-        @UniqueConstraint(columnNames = {"title", "instructor_id"})
-    }
-)
 public class Course {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @NotBlank
     @Column(nullable = false)
     private String title;
 
-    @Column(nullable = true)
     private String description;
 
     private String category;
 
     private LocalDateTime createdAt;
 
-    @ManyToOne(optional = false)
-    @JoinColumn(name = "instructor_id", nullable = false)
+    @ManyToOne
+    @JoinColumn(name = "instructor_id")
     private User instructor;
 
     @PrePersist
-    public void onCreate() {
+    public void prePersist() {
         this.createdAt = LocalDateTime.now();
     }
 
-    public Course() {
-    }
-    public Course(String title,
-                  String description,
-                  String category,
-                  User instructor,
-                  LocalDateTime createdAt) {
-
-        this.title = title;
-        this.description = description;
-        this.category = category;
-        this.instructor = instructor;
-        this.createdAt = createdAt;
-    }
+    public Course() {}
 
     public Long getId() {
         return id;
@@ -75,13 +54,14 @@ public class Course {
         return category;
     }
 
+    public LocalDateTime getCreatedAt() {
+        return createdAt;
+    }
+
     public User getInstructor() {
         return instructor;
     }
 
-    public LocalDateTime getCreatedAt() {
-        return createdAt;
-    }
     public void setId(Long id) {
         this.id = id;
     }

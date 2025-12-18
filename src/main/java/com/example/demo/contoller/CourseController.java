@@ -5,6 +5,8 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import jakarta.validation.Valid;
+
 import com.example.demo.dto.CourseRequestDTO;
 import com.example.demo.entity.Course;
 import com.example.demo.service.Courseservice;
@@ -18,7 +20,7 @@ public class CourseController {
 
     @PostMapping("/{instructorId}")
     public Course createCourse(
-            @RequestBody CourseRequestDTO dto,
+            @Valid @RequestBody CourseRequestDTO dto,
             @PathVariable Long instructorId) {
 
         Course course = new Course();
@@ -28,10 +30,11 @@ public class CourseController {
 
         return courseService.createCourse(course, instructorId);
     }
+
     @PutMapping("/{courseId}")
     public Course updateCourse(
-            @PathVariable Long courseId,
-            @RequestBody CourseRequestDTO dto) {
+            @Valid @RequestBody CourseRequestDTO dto,
+            @PathVariable Long courseId) {
 
         Course course = new Course();
         course.setTitle(dto.getTitle());
@@ -45,9 +48,9 @@ public class CourseController {
     public Course getCourse(@PathVariable Long courseId) {
         return courseService.getCourse(courseId);
     }
+
     @GetMapping("/instructor/{instructorId}")
-    public List<Course> getCoursesByInstructor(
-            @PathVariable Long instructorId) {
+    public List<Course> getCoursesByInstructor(@PathVariable Long instructorId) {
         return courseService.listCoursesByInstructor(instructorId);
     }
 }

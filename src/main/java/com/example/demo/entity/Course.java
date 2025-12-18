@@ -87,4 +87,13 @@ public class Course {
     public void setInstructorId(Long instructorId) {
         this.instructorId = instructorId;
     }
+
+    public Course() {
+    }
+    public Course(String title, String description, String category, Long instructorId) {
+        this.title = title;
+        this.description = description;
+        this.category = category;
+        this.instructorId = instructorId;
+    }
 }

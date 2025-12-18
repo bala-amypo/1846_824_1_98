@@ -12,30 +12,23 @@ import java.time.LocalDateTime;
 
 @Entity
 public class User {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
     @NotNull
     private String fullname;
-
     @NotNull
     @Column(unique = true, nullable = false)
     private String email;
-
     @NotNull
     private String password;
-
     @NotNull
     private String role;
-
     @NotNull(message = "Learning style must not be null")
     private String preferredLearningStyle;
 
     @Column(nullable = false)
     private LocalDateTime createdAt;
-
     @PrePersist
     public void onCreate() {
         this.createdAt = LocalDateTime.now();

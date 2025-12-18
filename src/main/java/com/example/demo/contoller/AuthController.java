@@ -3,7 +3,7 @@ package com.example.demo.controller;
 import com.example.demo.entity.User;
 import com.example.demo.dto.AuthRequest;
 import com.example.demo.dto.AuthResponse;
-import com.example.demo.service.UserService;
+import com.example.demo.service.Userservice;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.*;
 public class AuthController {
 
     @Autowired
-    public UserService userService;
+    public Userservice userService;
 
     @PostMapping("/register")
     public User register(@RequestBody User user) {

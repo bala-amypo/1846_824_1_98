@@ -3,7 +3,7 @@ package com.example.demo.service;
 import com.example.demo.entity.User;
 import com.example.demo.dto.AuthResponse;
 
-public interface UserService {
+public interface Userservice {
 
     User register(User user);
 

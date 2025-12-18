@@ -13,12 +13,22 @@ public class CourseServiceImpl implements Courseservice {
 
     @Override
     public Course createCourse(Course course, Long instructorId) {
+        course1.setInstructorId(instructorId);
         return course1.save(course);
     }
     @Override
     public Course updateCourse(Long courseId, Course course){
-        course exist=getCourseById(courseId);
-        exist.setCourse(course.get());
-        return course1.save(exist);
+        Course exist=getCourse(courseId);
+         if (exist != null) {
+            exist.setTitle(course.getTitle());
+            exist.setDescription(course.getDescription());
+            exist.setCategory(course.getCategory());
+            return course1.save(exist);
+        }
+        return null;
+    }
+    @Override
+    public Course delete12(Long courseId){
+        Course
     }
 }

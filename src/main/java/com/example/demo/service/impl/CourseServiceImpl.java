@@ -9,10 +9,15 @@ import com.example.demo.entity.Course;
 public class CourseServiceImpl implements Courseservice {
 
     @Autowired
-    private CourseRepository courseRepository;
+    private CourseRepository course1;
 
     @Override
     public Course createCourse(Course course, Long instructorId) {
-        return courseRepository.save(course);
+        return course1.save(course);
+    }
+    @Override
+    public Course updateCourse(Long courseId, Course course){
+        course exist=getCourseById(courseId);
+        exist.setCourse(course.get())
     }
 }

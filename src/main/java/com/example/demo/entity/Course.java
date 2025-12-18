@@ -6,7 +6,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.PrePersist;
 import jakarta.validation.constraints.NotNull;
-package com.example.demo.entity;
+
 
 import jakarta.validation.constraints.NotBlank;
 

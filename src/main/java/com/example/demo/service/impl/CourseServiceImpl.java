@@ -13,47 +13,33 @@ import com.example.demo.service.Courseservice;
 public class CourseServiceImpl implements Courseservice {
 
     @Autowired
-    private CourseRepository course1;
+    private CourseRepository courseRepo;
 
     @Override
     public Course createCourse(Course course, Long instructorId) {
         course.setInstructorId(instructorId);
-        return course1.save(course);
+        return courseRepo.save(course);
     }
 
     @Override
     public Course updateCourse(Long courseId, Course course) {
-        Course exist = getCourse(courseId);
-
-        if (exist != null) {
-            exist.setTitle(course.getTitle());
-            exist.setDescription(course.getDescription());
-            exist.setCategory(course.getCategory());
-            return course1.save(exist);
+        Course existing = getCourse(courseId);
+        if (existing != null) {
+            existing.setTitle(course.getTitle());
+            existing.setDescription(course.getDescription());
+            existing.setCategory(course.getCategory());
+            return courseRepo.save(existing);
         }
         return null;
     }
 
     @Override
-    public void deleteCourse(Long courseId) {
-        Course exist = getCourse(courseId);
-        if (exist != null) {
-            course1.delete(exist);
-        }
-    }
-
-    @Override
     public List<Course> listCoursesByInstructor(Long instructorId) {
-        return course1.findByInstructorId(instructorId);
+        return courseRepo.findByInstructorId(instructorId);
     }
 
     @Override
     public Course getCourse(Long courseId) {
-        return course1.findById(courseId).orElse(null);
-    }
-
-    @Override
-    public List<Course> getAllCourses() {
-        return course1.findAll();
+        return courseRepo.findById(courseId).orElse(null);
     }
 }

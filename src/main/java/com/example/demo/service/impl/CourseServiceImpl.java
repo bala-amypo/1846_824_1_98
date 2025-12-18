@@ -18,6 +18,7 @@ public class CourseServiceImpl implements Courseservice {
     @Override
     public Course updateCourse(Long courseId, Course course){
         course exist=getCourseById(courseId);
-        exist.setCourse(course.get())
+        exist.setCourse(course.get());
+        return course1.save(exist);
     }
 }

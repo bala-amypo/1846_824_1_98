@@ -13,15 +13,15 @@ import com.example.demo.service.Userservice;
 public class AuthController {
 
     @Autowired
-    public LocationService lcs;
+    public Userservice lcs;
 
     @PostMapping
-    public Location addLocation(@RequestBody Location loc) {
-        return lcs.createLocation(loc);
+    public User createUser(@RequestBody User loc) {
+        return lcs.createUser(loc);
     }
 
     @GetMapping
     public List<Location> getAll() {
-        return lcs.getAllLocations();
+        return lcs.getAllDetails();
     }
 }

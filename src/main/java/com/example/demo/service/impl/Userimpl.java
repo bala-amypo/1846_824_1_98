@@ -14,5 +14,13 @@ public class Userimpl implements Userservice {
     public User register(User user){
         urp.save(user);
     }
-    public User 
+    public User findById(Long id){
+        return urp.findById(id).orElse(Null);
+    }
+    public findByEmail(String email){
+        return urp.findByEmail(email);
+    }
+    public AuthResponse(String email,String password){
+        
+    }
 }

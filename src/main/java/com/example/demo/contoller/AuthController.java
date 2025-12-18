@@ -1,24 +1,31 @@
 package com.example.demo.controller;
 
-import java.util.List;
+import com.example.demo.entity.User;
+import com.example.demo.dto.AuthRequest;
+import com.example.demo.dto.AuthResponse;
+import com.example.demo.service.UserService;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-import com.example.demo.entity.User;
-import com.example.demo.service.Userservice;
 
 @RestController
-public class AuthController {
+public class UserController {
 
     @Autowired
-    public Userservice lcs;
+    public UserService userService;
 
-    @PostMapping("/user")
-    public User AddUser(@RequestBody User loc) {
-        return lcs.Createuser(loc);
+    @PostMapping("/register")
+    public User register(@RequestBody User user) {
+        return userService.register(user);
     }
 
-    @GetMapping
-    public List<User> getAll() {
-        return lcs.getAllDetails();
+    @PostMapping("/login")
+    public AuthResponse login(@RequestBody AuthRequest request) {
+        return userService.login(request.getEmail(), request.getPassword());
+    }
+
+    @GetMapping("/{id}")
+    public User getUser(@PathVariable Long id) {
+        return userService.findById(id);
     }
 }

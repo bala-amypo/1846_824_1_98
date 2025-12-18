@@ -12,12 +12,14 @@ import org.springframework.stereotype.Service;
 public class UserServiceImpl implements UserService {
 
     @Autowired
-    public UserRepository userRepository;
+    private UserRepository userRepository;
 
+    @Override
     public User register(User user) {
         return userRepository.save(user);
     }
 
+    @Override
     public AuthResponse login(String email, String password) {
         User user = userRepository.findByEmail(email);
 
@@ -32,10 +34,12 @@ public class UserServiceImpl implements UserService {
         return new AuthResponse("Login successful", true);
     }
 
+    @Override
     public User findById(Long id) {
         return userRepository.findById(id).orElse(null);
     }
 
+    @Override
     public User findByEmail(String email) {
         return userRepository.findByEmail(email);
     }

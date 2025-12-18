@@ -9,7 +9,7 @@ import org.springframework.stereotype.Service;
 public class Userimpl implements Userservice{
     @Autowired
     UserRepository lrp;
-    public User createUser(User user){
+    public User Createuser(User user){
         return lrp.save(user);
     }
     public List<User> getAllDetails(){

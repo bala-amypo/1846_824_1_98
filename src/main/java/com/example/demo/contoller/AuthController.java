@@ -7,19 +7,18 @@ import com.example.demo.entity.User;
 import com.example.demo.service.Userservice;
 
 @RestController
-@RequestMapping("/user")
 public class AuthController {
 
     @Autowired
     public Userservice lcs;
 
-    @PostMapping
+    @PostMapping("/user")
     public User AddUser(@RequestBody User loc) {
-        return lcs.createUser(loc);
+        return lcs.Createuser(loc);
     }
 
     @GetMapping
-    public List<Location> getAll() {
+    public List<User> getAll() {
         return lcs.getAllDetails();
     }
 }

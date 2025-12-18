@@ -11,34 +11,8 @@ public class Userimpl implements Userservice {
 
     @Autowired
     public UserRepository urp;
-
-    @Override
-    public User register(User user) {
-        return userRepository.save(user);
+    public User register(User user){
+        urp.save(user);
     }
-
-    @Override
-    public AuthResponse login(String email, String password) {
-        User user = urp.findByEmail(email);
-
-        if (user == null) {
-            return new AuthResponse("User not found", false);
-        }
-
-        if (!user.getPassword().equals(password)) {
-            return new AuthResponse("Invalid password", false);
-        }
-
-        return new AuthResponse("Login successful", true);
-    }
-
-  
-    public User findById(Long id) {
-        return urp.findById(id).orElse(null);
-    }
-
-    
-    public User findByEmail(String email) {
-        return urp.findByEmail(email);
-    }
+    public User 
 }

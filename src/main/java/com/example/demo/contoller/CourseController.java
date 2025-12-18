@@ -9,11 +9,12 @@ import com.example.demo.entity.Course;
 import com.example.demo.service.Courseservice;
 
 @RestController
-@RequestMapping("/course")
+
+
 public class CourseController {
 
     @Autowired
-    private Courseservice courseService;
+    public Courseservice courseService;
     @PostMapping("/{instructorId}")
     public Course createCourse(
             @RequestBody Course course,

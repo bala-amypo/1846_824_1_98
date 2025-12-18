@@ -18,10 +18,11 @@ public class CourseController {
     @Autowired
     private Courseservice courseService;
 
+    // CREATE COURSE
     @PostMapping("/{instructorId}")
     public Course createCourse(
             @Valid @RequestBody CourseRequestDTO dto,
-            @PathVariable Long instructorId) {
+            @PathVariable("instructorId") Long instructorId) {
 
         Course course = new Course();
         course.setTitle(dto.getTitle());
@@ -31,10 +32,11 @@ public class CourseController {
         return courseService.createCourse(course, instructorId);
     }
 
+    // UPDATE COURSE
     @PutMapping("/{courseId}")
     public Course updateCourse(
-            @Valid @RequestBody CourseRequestDTO dto,
-            @PathVariable Long courseId) {
+            @PathVariable("courseId") Long courseId,
+            @Valid @RequestBody CourseRequestDTO dto) {
 
         Course course = new Course();
         course.setTitle(dto.getTitle());
@@ -44,13 +46,16 @@ public class CourseController {
         return courseService.updateCourse(courseId, course);
     }
 
+    // GET COURSE BY ID
     @GetMapping("/{courseId}")
-    public Course getCourse(@PathVariable Long courseId) {
+    public Course getCourse(@PathVariable("courseId") Long courseId) {
         return courseService.getCourse(courseId);
     }
 
+    // GET COURSES BY INSTRUCTOR
     @GetMapping("/instructor/{instructorId}")
-    public List<Course> getCoursesByInstructor(@PathVariable Long instructorId) {
+    public List<Course> getCoursesByInstructor(
+            @PathVariable("instructorId") Long instructorId) {
         return courseService.listCoursesByInstructor(instructorId);
     }
 }

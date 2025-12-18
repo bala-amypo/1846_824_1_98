@@ -42,10 +42,10 @@ public class User {
         this.email = email;
     }
 
-    public String getpassword(){
+    public String getPassword(){
         return password;
     }
-    public void setpass(String password){
+    public void setPassword(String password){
         this.password=password;
     }
 

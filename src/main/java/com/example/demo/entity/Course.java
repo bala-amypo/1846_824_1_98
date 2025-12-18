@@ -90,10 +90,12 @@ public class Course {
 
     public Course() {
     }
-    public Course(String title, String description, String category, Long instructorId) {
+    public Course(String title, String description, String category, Long instructorId
+    ,LocalDateTime createdAt) {
         this.title = title;
         this.description = description;
         this.category = category;
         this.instructorId = instructorId;
+        this.createdAt=createdAt;
     }
 }

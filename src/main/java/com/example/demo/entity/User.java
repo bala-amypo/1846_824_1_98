@@ -42,7 +42,7 @@ public class User {
         this.email = email;
     }
 
-    public String getpass(){
+    public String getpassword(){
         return password;
     }
     public void setpass(String password){

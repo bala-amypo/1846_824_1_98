@@ -1,10 +1,8 @@
 package com.example.demo.service.impl;
-
 import com.example.demo.entity.User;
 import com.example.demo.repo.UserRepository;
 import com.example.demo.service.Userservice;
 import com.example.demo.dto.AuthResponse;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -12,7 +10,7 @@ import org.springframework.stereotype.Service;
 public class Userimpl implements Userservice {
 
     @Autowired
-    public UserRepository userRepository;
+    public UserRepository urp;
 
     @Override
     public User register(User user) {
@@ -21,7 +19,7 @@ public class Userimpl implements Userservice {
 
     @Override
     public AuthResponse login(String email, String password) {
-        User user = userRepository.findByEmail(email);
+        User user = urp.findByEmail(email);
 
         if (user == null) {
             return new AuthResponse("User not found", false);
@@ -34,13 +32,13 @@ public class Userimpl implements Userservice {
         return new AuthResponse("Login successful", true);
     }
 
-    @Override
+  
     public User findById(Long id) {
-        return userRepository.findById(id).orElse(null);
+        return urp.findById(id).orElse(null);
     }
 
-    @Override
+    
     public User findByEmail(String email) {
-        return userRepository.findByEmail(email);
+        return urp.findByEmail(email);
     }
 }

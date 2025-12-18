@@ -22,6 +22,13 @@ public class Userimpl implements Userservice {
     }
     public AuthResponse(String email,String password){
         User user=urp.findByEmail(email);
-        if()
+        if(user==null){
+            return new AuthResponse("User not found",false);
+        }
+         if (!user.getPassword().equals(password)) {
+            return new AuthResponse("Invalid password", false);
+        }
+
+        return new AuthResponse("Login successful", true);
     }
 }

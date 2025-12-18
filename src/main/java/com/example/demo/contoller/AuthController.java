@@ -25,7 +25,7 @@ public class AuthController {
     }
 
     @GetMapping("/{id}")
-    public User getUser(@PathVariable Long id) {
+    public User getUser(@RequestParam Long id) {
         return userService.findById(id);
     }
 }

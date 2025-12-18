@@ -5,5 +5,5 @@ public interface Courseservice{
     Course createCourse(Course course, Long instructorId);
     Course updateCourse(Long courseId, Course course);
     List<Course> listCoursesByInstructor(Long instructorId);
-    Course getCourse(Long courseId);
+    Course getCourse(Long courseId); 
 }

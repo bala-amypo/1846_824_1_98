@@ -1,7 +1,15 @@
-package com.example.demo.repo;
+package com.example.demo.repository;
 
+import com.example.demo.entity.MicroLesson;
 import org.springframework.data.jpa.repository.JpaRepository;
-import com.example.demo.entity.Micro;
 
-public interface MicroRepository extends JpaRepository<Micro, Long> {
+import java.util.List;
+
+public interface MicroRepository extends JpaRepository<MicroLesson, Long> {
+
+    List<MicroLesson> findByTagsContainingAndDifficultyAndContentType(
+            String tags,
+            Enum difficulty,
+            Enum contentType
+    );
 }

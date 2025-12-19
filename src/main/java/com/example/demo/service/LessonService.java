@@ -1,8 +1,7 @@
 package com.example.demo.service;
 
-import com.example.demo.entity.MicroLesson;
-
 import java.util.List;
+import com.example.demo.entity.MicroLesson;
 
 public interface LessonService {
 

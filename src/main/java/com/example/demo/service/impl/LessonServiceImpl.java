@@ -27,6 +27,9 @@ public class LessonServiceImpl implements LessonService {
     public Micro addLesson(Long courseId, MicroRequestDTO dto) {
 
         Course course = courseRepo.findById(courseId).orElse(null);
+        if (course == null) {
+            throw new RuntimeException("Course not found with id: " + courseId);
+        }
 
         Micro micro = new Micro();
         micro.setCourse(course);

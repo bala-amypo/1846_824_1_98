@@ -43,6 +43,7 @@ public class LessonController {
             @RequestParam String difficulty,
             @RequestParam String contentType) {
 
-        return lessonService.findLessonsByFilters(tags, difficulty, contentType);
+        return lessonService.findLessonsByFilters(
+                tags, difficulty, contentType);
     }
 }

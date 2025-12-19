@@ -12,7 +12,7 @@ import com.example.demo.repo.MicroRepository;
 import com.example.demo.service.LessonService;
 
 @Service
-public class LessonServiceImpl implements LessonService {
+public class LessonServiceimpl implements LessonService {
 
     @Autowired
     private MicroRepository lessonRepo;

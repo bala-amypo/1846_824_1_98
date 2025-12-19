@@ -27,7 +27,7 @@ public class Micro {
 
     @Min(1)
     @Max(15)
-    @Column(nullable = false)
+    @Column(name = "duration", nullable = false)
     private Integer durationMinutes;
 
     @Enumerated(EnumType.STRING)

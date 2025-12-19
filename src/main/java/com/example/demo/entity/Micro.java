@@ -6,50 +6,59 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Column;
 import jakarta.persistence.PrePersist;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.JoinColumn;
+
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.Max;
-import jakarta.persistence.JoinColumn;
+
 import java.time.LocalDateTime;
-import jakarta.persistence.ManyToOne;
 
 @Entity
 public class Micro {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
     @NotBlank
     @Column(nullable = false)
     private String title;
+
     @NotBlank
     @Column(nullable = false)
     private String difficulty;
+
     @NotBlank
     @Column(nullable = false)
     private String contentType;
-    @NotBlank
-    @Column(nullable = false)
-    @ManyToOne
-    @JoinColumn(name="course_id")
+
+    @ManyToOne(optional = false)
+    @JoinColumn(name = "course_id", nullable = false)
     private Course course;
+
     private String tags;
+
     @Min(1)
     @Max(15)
     @Column(nullable = false)
     private int duration;
+
     @Column(nullable = false)
     private LocalDateTime createdAt;
+
     @PrePersist
     public void onCreate() {
         this.createdAt = LocalDateTime.now();
     }
+
     public Micro() {
     }
-
     public Micro(String title,
                  String difficulty,
                  String contentType,
-                 String course,
+                 Course course,
                  String tags,
                  int duration) {
 
@@ -77,7 +86,7 @@ public class Micro {
         return contentType;
     }
 
-    public String getCourse() {
+    public Course getCourse() {
         return course;
     }
 
@@ -105,7 +114,7 @@ public class Micro {
         this.contentType = contentType;
     }
 
-    public void setCourse(String course) {
+    public void setCourse(Course course) {
         this.course = course;
     }
 

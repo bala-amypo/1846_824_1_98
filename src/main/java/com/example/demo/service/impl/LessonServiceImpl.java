@@ -5,10 +5,8 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.example.demo.entity.Course;
-import com.example.demo.entity.Micro;
-import com.example.demo.entity.ContentType;
-import com.example.demo.entity.Difficulty;
+import com.example.demo.dto.MicroRequestDTO;
+import com.example.demo.entity.*;
 import com.example.demo.repo.CourseRepository;
 import com.example.demo.repo.MicroRepository;
 import com.example.demo.service.LessonService;
@@ -17,33 +15,45 @@ import com.example.demo.service.LessonService;
 public class LessonServiceImpl implements LessonService {
 
     @Autowired
-    private MicroRepository lessonRepo;
+    private MicroRepository microRepo;
 
     @Autowired
     private CourseRepository courseRepo;
 
     @Override
-    public Micro addLesson(Long courseId, Micro lesson) {
+    public Micro addLesson(Long courseId, MicroRequestDTO dto) {
 
         Course course = courseRepo.findById(courseId).orElse(null);
-        lesson.setCourse(course);
 
-        return lessonRepo.save(lesson);
+        Micro micro = new Micro();
+        micro.setCourse(course);
+        micro.setTitle(dto.getTitle());
+        micro.setDurationMinutes(dto.getDurationMinutes());
+        micro.setTags(dto.getTags());
+        micro.setDifficulty(Difficulty.valueOf(dto.getDifficulty()));
+        micro.setContentType(ContentType.valueOf(dto.getContentType()));
+
+        return microRepo.save(micro);
     }
 
     @Override
-    public Micro updateLesson(Long lessonId, Micro lesson) {
+    public Micro updateLesson(Long lessonId, MicroRequestDTO dto) {
 
         Micro existing = getLesson(lessonId);
         if (existing != null) {
-            existing.setTitle(lesson.getTitle());
-            existing.setDurationMinutes(lesson.getDurationMinutes());
-            existing.setTags(lesson.getTags());
-            existing.setDifficulty(lesson.getDifficulty());
-            existing.setContentType(lesson.getContentType());
-            return lessonRepo.save(existing);
+            existing.setTitle(dto.getTitle());
+            existing.setDurationMinutes(dto.getDurationMinutes());
+            existing.setTags(dto.getTags());
+            existing.setDifficulty(Difficulty.valueOf(dto.getDifficulty()));
+            existing.setContentType(ContentType.valueOf(dto.getContentType()));
+            return microRepo.save(existing);
         }
         return null;
+    }
+
+    @Override
+    public Micro getLesson(Long lessonId) {
+        return microRepo.findById(lessonId).orElse(null);
     }
 
     @Override
@@ -52,18 +62,10 @@ public class LessonServiceImpl implements LessonService {
             String difficulty,
             String contentType) {
 
-        Difficulty diffEnum = Difficulty.valueOf(difficulty);
-        ContentType typeEnum = ContentType.valueOf(contentType);
-
-        return lessonRepo.findByTagsContainingAndDifficultyAndContentType(
+        return microRepo.findByTagsContainingAndDifficultyAndContentType(
                 tags,
-                diffEnum,
-                typeEnum
+                Difficulty.valueOf(difficulty),
+                ContentType.valueOf(contentType)
         );
-    }
-
-    @Override
-    public Micro getLesson(Long lessonId) {
-        return lessonRepo.findById(lessonId).orElse(null);
     }
 }

@@ -18,7 +18,7 @@ public class CourseController {
     @Autowired
     private Courseservice courseService;
 
-    // CREATE COURSE
+   
     @PostMapping("/{instructorId}")
     public Course createCourse(
             @Valid @RequestBody CourseRequestDTO dto,
@@ -32,7 +32,7 @@ public class CourseController {
         return courseService.createCourse(course, instructorId);
     }
 
-    // UPDATE COURSE
+   
     @PutMapping("/{courseId}")
     public Course updateCourse(
             @PathVariable("courseId") Long courseId,
@@ -46,13 +46,11 @@ public class CourseController {
         return courseService.updateCourse(courseId, course);
     }
 
-    // GET COURSE BY ID
     @GetMapping("/{courseId}")
     public Course getCourse(@PathVariable("courseId") Long courseId) {
         return courseService.getCourse(courseId);
     }
 
-    // GET COURSES BY INSTRUCTOR
     @GetMapping("/instructor/{instructorId}")
     public List<Course> getCoursesByInstructor(
             @PathVariable("instructorId") Long instructorId) {

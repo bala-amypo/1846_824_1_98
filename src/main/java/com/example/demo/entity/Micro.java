@@ -28,6 +28,7 @@ public class Micro {
     private String contentType;
     @NotBlank
     @Column(nullable = false)
+    @ManyToOne
     @JoinColumn(name="course_id")
     private Course course;
     private String tags;

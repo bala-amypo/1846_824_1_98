@@ -11,7 +11,7 @@ import jakarta.persistence.PrePersist;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.Max;
-
+import jakarta.persistence.JoinColumn;
 import java.time.LocalDateTime;
 
 @Entity

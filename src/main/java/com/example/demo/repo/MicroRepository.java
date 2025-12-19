@@ -1,15 +1,18 @@
 package com.example.demo.repo;
 
-import com.example.demo.entity.Micro;
+import java.util.List;
+
 import org.springframework.data.jpa.repository.JpaRepository;
 
-import java.util.List;
+import com.example.demo.entity.Micro;
+import com.example.demo.entity.ContentType;
+import com.example.demo.entity.Difficulty;
 
 public interface MicroRepository extends JpaRepository<Micro, Long> {
 
     List<Micro> findByTagsContainingAndDifficultyAndContentType(
-             String tags,
-            String difficulty,
-            String contentType
+            String tags,
+            Difficulty difficulty,
+            ContentType contentType
     );
 }

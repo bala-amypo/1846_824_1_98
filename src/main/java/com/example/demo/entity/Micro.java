@@ -58,7 +58,7 @@ public class Micro{
         this.publishDate = LocalDate.now();
     }
 
-    public MicroLesson() {}
+    public Micro() {}
 
     public Long getId() {
         return id;

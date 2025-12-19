@@ -1,98 +1,119 @@
 package com.example.demo.entity;
 
 import jakarta.persistence.Entity;
+import jakarta.persistence.Table;
+import jakarta.persistence.Id;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Size;
+import jakarta.persistence.Column;
+import jakarta.persistence.PrePersist;
+
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.Max;
 
 import java.time.LocalDateTime;
 
 @Entity
-public class Micro{
+@Table(name = "micro_lessons")
+public class Micro {
     @Id
-    @GeneratedValue(strategy=GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    @NotBlank
+    @Column(nullable = false)
     private String title;
-  
-    private String diff;
-    
+    @NotBlank
+    @Column(nullable = false)
+    private String difficulty;
+    @NotBlank
+    @Column(nullable = false)
     private String contentType;
+    @NotBlank
+    @Column(nullable = false)
     private String course;
     private String tags;
-    @Size(min=1,max=15)
+    @Min(1)
+    @Max(15)
+    @Column(nullable = false)
     private int duration;
-    private LocalDateTime date;
+    @Column(nullable = false)
+    private LocalDateTime createdAt;
+    @PrePersist
+    public void onCreate() {
+        this.createdAt = LocalDateTime.now();
+    }
+    public Micro() {
+    }
+
+    public Micro(String title,
+                 String difficulty,
+                 String contentType,
+                 String course,
+                 String tags,
+                 int duration) {
+
+        this.title = title;
+        this.difficulty = difficulty;
+        this.contentType = contentType;
+        this.course = course;
+        this.tags = tags;
+        this.duration = duration;
+    }
 
     public Long getId() {
         return id;
     }
-    public void setId(Long id) {
-        this.id = id;
+
+    public String getTitle() {
+        return title;
     }
 
-    public LocalDateTime getdate() {
-        return date;
-    }
-    public void setdate(LocalDateTime date) {
-        this.date = date;
-    }
-    
-
-    public int getduration() {
-        return duration;
-    }
-    public void setduration(int duration) {
-        this.duration = duration;
+    public String getDifficulty() {
+        return difficulty;
     }
 
-    public String getdiff() {
-        return diff;
-    }
-    public void setdiff(String diff) {
-        this.diff = diff;
-    }
-
-
-    public String getcontentType() {
+    public String getContentType() {
         return contentType;
     }
-    public void setcontentType(String contentType) {
+
+    public String getCourse() {
+        return course;
+    }
+
+    public String getTags() {
+        return tags;
+    }
+
+    public int getDuration() {
+        return duration;
+    }
+
+    public LocalDateTime getCreatedAt() {
+        return createdAt;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public void setDifficulty(String difficulty) {
+        this.difficulty = difficulty;
+    }
+
+    public void setContentType(String contentType) {
         this.contentType = contentType;
     }
 
-    public String getcourse() {
-        return course;
-    }
-    public void setcourse(String course) {
+    public void setCourse(String course) {
         this.course = course;
     }
 
-    public String gettitle(){
-        return title;
-    }
-    public void settitle(String title){
-        this.title=title;
+    public void setTags(String tags) {
+        this.tags = tags;
     }
 
-    public String gettags(){
-        return tags;
+    public void setDuration(int duration) {
+        this.duration = duration;
     }
-    public void settags(String tags){
-        this.tags=tags;
-    }
-
-    public Micro(Long id,String title,String contentType,String tags,String course,String diff,
-    LocalDateTime date,int duration){
-         this.id = id;
-         this.title=title;
-         this.contentType=contentType;
-         this.tags=tags;
-         this.course=course;
-         this.diff=diff;
-         this.date=date;
-         this.duration=duration;
-}
-public Micro(){}
 }

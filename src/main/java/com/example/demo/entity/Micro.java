@@ -28,7 +28,8 @@ public class Micro {
     private String contentType;
     @NotBlank
     @Column(nullable = false)
-    private String course;
+    @JoinColumn(name="course_id")
+    private Course course;
     private String tags;
     @Min(1)
     @Max(15)

@@ -7,14 +7,14 @@ import jakarta.validation.constraints.NotBlank;
 
 import java.time.LocalDate;
 
-public enum ContentType {
+enum ContentType {
     VIDEO,
     ARTICLE,
     QUIZ,
     AUDIO
 }
 
-public enum Difficulty {
+enum Difficulty {
     BEGINNER,
     INTERMEDIATE,
     ADVANCED

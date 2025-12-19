@@ -7,7 +7,7 @@ import java.util.List;
 
 public interface MicroRepository extends JpaRepository<Micro, Long> {
 
-    List<MicroLesson> findByTagsContainingAndDifficultyAndContentType(
+    List<Micro> findByTagsContainingAndDifficultyAndContentType(
             String tags,
             Enum difficulty,
             Enum contentType

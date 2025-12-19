@@ -6,7 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.example.demo.entity.Course;
-import com.example.demo.entity.MicroLesson;
+import com.example.demo.entity.Micro;
 import com.example.demo.repo.CourseRepository;
 import com.example.demo.repo.MicroRepository;
 import com.example.demo.service.LessonService;
@@ -21,7 +21,7 @@ public class LessonServiceImpl implements LessonService {
     private CourseRepository courseRepo;
 
     @Override
-    public MicroLesson addLesson(Long courseId, MicroLesson lesson) {
+    public Micro addLesson(Long courseId, Micro lesson) {
 
         Course course = courseRepo.findById(courseId).orElse(null);
         lesson.setCourse(course);
@@ -30,9 +30,9 @@ public class LessonServiceImpl implements LessonService {
     }
 
     @Override
-    public MicroLesson updateLesson(Long lessonId, MicroLesson lesson) {
+    public Micro updateLesson(Long lessonId, Micro lesson) {
 
-        MicroLesson existing = getLesson(lessonId);
+        Micro existing = getLesson(lessonId);
         if (existing != null) {
             existing.setTitle(lesson.getTitle());
             existing.setDurationMinutes(lesson.getDurationMinutes());
@@ -45,7 +45,7 @@ public class LessonServiceImpl implements LessonService {
     }
 
     @Override
-    public List<MicroLesson> findLessonsByFilters(
+    public List<Micro> findLessonsByFilters(
             String tags,
             String difficulty,
             String contentType) {
@@ -59,7 +59,7 @@ public class LessonServiceImpl implements LessonService {
     }
 
     @Override
-    public MicroLesson getLesson(Long lessonId) {
+    public Micro getLesson(Long lessonId) {
         return lessonRepo.findById(lessonId).orElse(null);
     }
 }

@@ -11,6 +11,7 @@ import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.Max;
 import jakarta.persistence.JoinColumn;
 import java.time.LocalDateTime;
+import jakarta.persistence.ManyToOne;
 
 @Entity
 public class Micro {

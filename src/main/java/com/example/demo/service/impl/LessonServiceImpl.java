@@ -7,6 +7,8 @@ import org.springframework.stereotype.Service;
 
 import com.example.demo.entity.Course;
 import com.example.demo.entity.Micro;
+import com.example.demo.entity.ContentType;
+import com.example.demo.entity.Difficulty;
 import com.example.demo.repo.CourseRepository;
 import com.example.demo.repo.MicroRepository;
 import com.example.demo.service.LessonService;
@@ -50,12 +52,14 @@ public class LessonServiceImpl implements LessonService {
             String difficulty,
             String contentType) {
 
-        return lessonRepo
-                .findByTagsContainingAndDifficultyAndContentType(
-                        tags,
-                        difficulty,
-                        contentType
-                );
+        Difficulty diffEnum = Difficulty.valueOf(difficulty);
+        ContentType typeEnum = ContentType.valueOf(contentType);
+
+        return lessonRepo.findByTagsContainingAndDifficultyAndContentType(
+                tags,
+                diffEnum,
+                typeEnum
+        );
     }
 
     @Override

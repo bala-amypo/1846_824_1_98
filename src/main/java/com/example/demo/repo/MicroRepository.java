@@ -14,11 +14,11 @@ import com.example.demo.enums.Difficulty;
 public interface MicroRepository extends JpaRepository<Micro, Long> {
 
     @Query("""
-        SELECT m FROM Micro m
-        WHERE (:tags = '' OR m.tags LIKE %:tags%)
-        AND (:difficulty IS NULL OR m.difficulty = :difficulty)
-        AND (:contentType IS NULL OR m.contentType = :contentType)
-    """)
+    SELECT m FROM Micro m
+    WHERE (:tags = '' OR (m.tags IS NOT NULL AND m.tags LIKE %:tags%))
+    AND (:difficulty IS NULL OR m.difficulty = :difficulty)
+    AND (:contentType IS NULL OR m.contentType = :contentType)
+""")
     List<Micro> search(
             String tags,
             Difficulty difficulty,

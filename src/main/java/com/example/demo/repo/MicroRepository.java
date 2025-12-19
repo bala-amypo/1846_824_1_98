@@ -8,8 +8,8 @@ import java.util.List;
 public interface MicroRepository extends JpaRepository<Micro, Long> {
 
     List<Micro> findByTagsContainingAndDifficultyAndContentType(
-            String tags,
-            Enum difficulty,
-            Enum contentType
+             String tags,
+            String difficulty,
+            String contentType
     );
 }

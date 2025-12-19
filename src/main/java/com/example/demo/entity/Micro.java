@@ -1,128 +1,118 @@
 package com.example.demo.entity;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Column;
-import jakarta.persistence.PrePersist;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.JoinColumn;
-
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.Min;
+import jakarta.persistence.*;
 import jakarta.validation.constraints.Max;
+import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.NotBlank;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
+
+enum ContentType {
+    VIDEO,
+    ARTICLE,
+    QUIZ,
+    AUDIO
+}
+
+enum Difficulty {
+    BEGINNER,
+    INTERMEDIATE,
+    ADVANCED
+}
 
 @Entity
-public class Micro {
+public class Micro{
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @NotBlank
-    @Column(nullable = false)
-    private String title;
-
-    @NotBlank
-    @Column(nullable = false)
-    private String difficulty;
-
-    @NotBlank
-    @Column(nullable = false)
-    private String contentType;
-
     @ManyToOne(optional = false)
     @JoinColumn(name = "course_id", nullable = false)
     private Course course;
 
-    private String tags;
+    @NotBlank
+    @Column(nullable = false)
+    private String title;
 
     @Min(1)
     @Max(15)
     @Column(nullable = false)
-    private int duration;
+    private Integer durationMinutes;
+
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
+    private ContentType contentType;
+
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
+    private Difficulty difficulty;
+
+    private String tags;
 
     @Column(nullable = false)
-    private LocalDateTime createdAt;
+    private LocalDate publishDate;
 
     @PrePersist
     public void onCreate() {
-        this.createdAt = LocalDateTime.now();
+        this.publishDate = LocalDate.now();
     }
 
-    public Micro() {
-    }
-    public Micro(String title,
-                 String difficulty,
-                 String contentType,
-                 Course course,
-                 String tags,
-                 int duration) {
-
-        this.title = title;
-        this.difficulty = difficulty;
-        this.contentType = contentType;
-        this.course = course;
-        this.tags = tags;
-        this.duration = duration;
-    }
+    public MicroLesson() {}
 
     public Long getId() {
         return id;
-    }
-
-    public String getTitle() {
-        return title;
-    }
-
-    public String getDifficulty() {
-        return difficulty;
-    }
-
-    public String getContentType() {
-        return contentType;
     }
 
     public Course getCourse() {
         return course;
     }
 
+    public String getTitle() {
+        return title;
+    }
+
+    public Integer getDurationMinutes() {
+        return durationMinutes;
+    }
+
+    public ContentType getContentType() {
+        return contentType;
+    }
+
+    public Difficulty getDifficulty() {
+        return difficulty;
+    }
+
     public String getTags() {
         return tags;
     }
 
-    public int getDuration() {
-        return duration;
-    }
-
-    public LocalDateTime getCreatedAt() {
-        return createdAt;
-    }
-
-    public void setTitle(String title) {
-        this.title = title;
-    }
-
-    public void setDifficulty(String difficulty) {
-        this.difficulty = difficulty;
-    }
-
-    public void setContentType(String contentType) {
-        this.contentType = contentType;
+    public LocalDate getPublishDate() {
+        return publishDate;
     }
 
     public void setCourse(Course course) {
         this.course = course;
     }
 
-    public void setTags(String tags) {
-        this.tags = tags;
+    public void setTitle(String title) {
+        this.title = title;
     }
 
-    public void setDuration(int duration) {
-        this.duration = duration;
+    public void setDurationMinutes(Integer durationMinutes) {
+        this.durationMinutes = durationMinutes;
+    }
+
+    public void setContentType(ContentType contentType) {
+        this.contentType = contentType;
+    }
+
+    public void setDifficulty(Difficulty difficulty) {
+        this.difficulty = difficulty;
+    }
+
+    public void setTags(String tags) {
+        this.tags = tags;
     }
 }

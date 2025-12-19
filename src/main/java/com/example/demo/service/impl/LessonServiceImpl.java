@@ -8,14 +8,14 @@ import org.springframework.stereotype.Service;
 import com.example.demo.entity.Course;
 import com.example.demo.entity.MicroLesson;
 import com.example.demo.repo.CourseRepository;
-import com.example.demo.repo.MicroLessonRepository;
+import com.example.demo.repo.MicroRepository;
 import com.example.demo.service.LessonService;
 
 @Service
 public class LessonServiceImpl implements LessonService {
 
     @Autowired
-    private MicroLessonRepository lessonRepo;
+    private MicroRepository lessonRepo;
 
     @Autowired
     private CourseRepository courseRepo;

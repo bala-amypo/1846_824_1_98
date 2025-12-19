@@ -5,8 +5,8 @@ import java.util.List;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import com.example.demo.entity.Micro;
-import com.example.demo.entity.ContentType;
-import com.example.demo.entity.Difficulty;
+import com.example.demo.enums.ContentType;
+import com.example.demo.enums.Difficulty;
 
 public interface MicroRepository extends JpaRepository<Micro, Long> {
 

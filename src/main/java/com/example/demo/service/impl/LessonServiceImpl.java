@@ -6,7 +6,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.example.demo.dto.MicroRequestDTO;
-import com.example.demo.entity.*;
+import com.example.demo.entity.Course;
+import com.example.demo.entity.Micro;
+import com.example.demo.enums.ContentType;
+import com.example.demo.enums.Difficulty;
 import com.example.demo.repo.CourseRepository;
 import com.example.demo.repo.MicroRepository;
 import com.example.demo.service.LessonService;
@@ -39,7 +42,7 @@ public class LessonServiceImpl implements LessonService {
     @Override
     public Micro updateLesson(Long lessonId, MicroRequestDTO dto) {
 
-        Micro existing = getLesson(lessonId);
+        Micro existing = microRepo.findById(lessonId).orElse(null);
         if (existing != null) {
             existing.setTitle(dto.getTitle());
             existing.setDurationMinutes(dto.getDurationMinutes());

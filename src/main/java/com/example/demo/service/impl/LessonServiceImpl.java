@@ -13,7 +13,6 @@ import com.example.demo.enums.Difficulty;
 import com.example.demo.repo.CourseRepository;
 import com.example.demo.repo.MicroRepository;
 import com.example.demo.service.LessonService;
-
 @Service
 public class LessonServiceImpl implements LessonService {
 
@@ -26,18 +25,21 @@ public class LessonServiceImpl implements LessonService {
     @Override
     public Micro addLesson(Long courseId, MicroRequestDTO dto) {
 
-        Course course = courseRepo.findById(courseId).orElse(null);
-        if (course == null) {
-            throw new RuntimeException("Course not found with id: " + courseId);
-        }
+        Course course = courseRepo.findById(courseId)
+                .orElseThrow(() -> new RuntimeException("Course not found"));
 
         Micro micro = new Micro();
         micro.setCourse(course);
         micro.setTitle(dto.getTitle());
         micro.setDurationMinutes(dto.getDurationMinutes());
         micro.setTags(dto.getTags());
-        micro.setDifficulty(Difficulty.valueOf(dto.getDifficulty()));
-        micro.setContentType(ContentType.valueOf(dto.getContentType()));
+
+        micro.setDifficulty(
+                Difficulty.valueOf(dto.getDifficulty().toUpperCase())
+        );
+        micro.setContentType(
+                ContentType.valueOf(dto.getContentType().toUpperCase())
+        );
 
         return microRepo.save(micro);
     }
@@ -45,21 +47,27 @@ public class LessonServiceImpl implements LessonService {
     @Override
     public Micro updateLesson(Long lessonId, MicroRequestDTO dto) {
 
-        Micro existing = microRepo.findById(lessonId).orElse(null);
-        if (existing != null) {
-            existing.setTitle(dto.getTitle());
-            existing.setDurationMinutes(dto.getDurationMinutes());
-            existing.setTags(dto.getTags());
-            existing.setDifficulty(Difficulty.valueOf(dto.getDifficulty()));
-            existing.setContentType(ContentType.valueOf(dto.getContentType()));
-            return microRepo.save(existing);
-        }
-        return null;
+        Micro existing = microRepo.findById(lessonId)
+                .orElseThrow(() -> new RuntimeException("Lesson not found"));
+
+        existing.setTitle(dto.getTitle());
+        existing.setDurationMinutes(dto.getDurationMinutes());
+        existing.setTags(dto.getTags());
+
+        existing.setDifficulty(
+                Difficulty.valueOf(dto.getDifficulty().toUpperCase())
+        );
+        existing.setContentType(
+                ContentType.valueOf(dto.getContentType().toUpperCase())
+        );
+
+        return microRepo.save(existing);
     }
 
     @Override
     public Micro getLesson(Long lessonId) {
-        return microRepo.findById(lessonId).orElse(null);
+        return microRepo.findById(lessonId)
+                .orElseThrow(() -> new RuntimeException("Lesson not found"));
     }
 
     @Override
@@ -68,10 +76,15 @@ public class LessonServiceImpl implements LessonService {
             String difficulty,
             String contentType) {
 
-        return microRepo.findByTagsContainingAndDifficultyAndContentType(
-                tags,
-                Difficulty.valueOf(difficulty),
-                ContentType.valueOf(contentType)
-        );
+        if (tags == null) tags = "";
+        Difficulty diff = difficulty != null
+                ? Difficulty.valueOf(difficulty.toUpperCase())
+                : null;
+
+        ContentType type = contentType != null
+                ? ContentType.valueOf(contentType.toUpperCase())
+                : null;
+
+        return microRepo.search(tags, diff, type);
     }
 }

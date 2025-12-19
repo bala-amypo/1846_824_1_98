@@ -40,8 +40,9 @@ public class Micro {
 
     private String tags;
 
-    @Column(nullable = false)
+    @Column(nullable = false, updatable = false)
     private LocalDate publishDate;
+
 
     @PrePersist
     public void onCreate() {

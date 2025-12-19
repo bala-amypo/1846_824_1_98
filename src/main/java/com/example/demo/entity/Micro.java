@@ -7,19 +7,8 @@ import jakarta.validation.constraints.NotBlank;
 
 import java.time.LocalDate;
 
-enum ContentType {
-    VIDEO,
-    ARTICLE,
-    QUIZ,
-    AUDIO
-}
-
-enum Difficulty {
-    BEGINNER,
-    INTERMEDIATE,
-    ADVANCED
-}
-
+import com.example.demo.enums.ContentType;
+import com.example.demo.enums.Difficulty;
 
 @Entity
 public class Micro {

@@ -7,21 +7,22 @@ import jakarta.validation.constraints.NotBlank;
 
 import java.time.LocalDate;
 
-enum ContentType {
+public enum ContentType {
     VIDEO,
     ARTICLE,
     QUIZ,
     AUDIO
 }
 
-enum Difficulty {
+public enum Difficulty {
     BEGINNER,
     INTERMEDIATE,
     ADVANCED
 }
 
+
 @Entity
-public class Micro{
+public class Micro {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -58,61 +59,19 @@ public class Micro{
         this.publishDate = LocalDate.now();
     }
 
-    public Micro() {}
+    public Long getId() { return id; }
+    public Course getCourse() { return course; }
+    public String getTitle() { return title; }
+    public Integer getDurationMinutes() { return durationMinutes; }
+    public ContentType getContentType() { return contentType; }
+    public Difficulty getDifficulty() { return difficulty; }
+    public String getTags() { return tags; }
+    public LocalDate getPublishDate() { return publishDate; }
 
-    public Long getId() {
-        return id;
-    }
-
-    public Course getCourse() {
-        return course;
-    }
-
-    public String getTitle() {
-        return title;
-    }
-
-    public Integer getDurationMinutes() {
-        return durationMinutes;
-    }
-
-    public ContentType getContentType() {
-        return contentType;
-    }
-
-    public Difficulty getDifficulty() {
-        return difficulty;
-    }
-
-    public String getTags() {
-        return tags;
-    }
-
-    public LocalDate getPublishDate() {
-        return publishDate;
-    }
-
-    public void setCourse(Course course) {
-        this.course = course;
-    }
-
-    public void setTitle(String title) {
-        this.title = title;
-    }
-
-    public void setDurationMinutes(Integer durationMinutes) {
-        this.durationMinutes = durationMinutes;
-    }
-
-    public void setContentType(ContentType contentType) {
-        this.contentType = contentType;
-    }
-
-    public void setDifficulty(Difficulty difficulty) {
-        this.difficulty = difficulty;
-    }
-
-    public void setTags(String tags) {
-        this.tags = tags;
-    }
+    public void setCourse(Course course) { this.course = course; }
+    public void setTitle(String title) { this.title = title; }
+    public void setDurationMinutes(Integer durationMinutes) { this.durationMinutes = durationMinutes; }
+    public void setContentType(ContentType contentType) { this.contentType = contentType; }
+    public void setDifficulty(Difficulty difficulty) { this.difficulty = difficulty; }
+    public void setTags(String tags) { this.tags = tags; }
 }

@@ -7,10 +7,11 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.PrePersist;
-
-import jakarta.validation.constraints.DecimalMax;
-import jakarta.validation.constraints.DecimalMin;
+import jakarta.validation.constraints.Max;
+import jakarta.validation.constraints.Min;
 
 @Entity
 public class Recommendation {
@@ -19,79 +20,63 @@ public class Recommendation {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false)
-    private Long userId;
+    @ManyToOne
+    @JoinColumn(name = "user_id", nullable = false)
+    private User user;
 
     @Column(nullable = false)
     private LocalDateTime generatedAt;
 
     @Column(nullable = false, length = 1000)
-    private String recommendedLessons;
+    private String recommendedLessonIds;
 
-    @Column(nullable = false, length = 1000)
+    @Column(nullable = false)
     private String basisSnapshot;
 
-    @DecimalMin(value = "0.0")
-    @DecimalMax(value = "1.0")
+    @Min(0)
+    @Max(1)
     @Column(nullable = false)
     private Double confidenceScore;
 
     @PrePersist
-    private void setGeneratedAt() {
+    public void onCreate() {
         this.generatedAt = LocalDateTime.now();
-    }
-
-    public Recommendation() {
-    }
-
-    public Recommendation(
-            Long id,
-            Long userId,
-            String recommendedLessons,
-            String basisSnapshot,
-            Double confidenceScore
-    ) {
-        this.id = id;
-        this.userId = userId;
-        this.recommendedLessons = recommendedLessons;
-        this.basisSnapshot = basisSnapshot;
-        this.confidenceScore = confidenceScore;
     }
 
     public Long getId() {
         return id;
     }
 
-    public Long getUserId() {
-        return userId;
-    }
-
-    public void setUserId(Long userId) {
-        this.userId = userId;
+    public User getUser() {
+        return user;
     }
 
     public LocalDateTime getGeneratedAt() {
         return generatedAt;
     }
 
-    public String getRecommendedLessons() {
-        return recommendedLessons;
-    }
-
-    public void setRecommendedLessons(String recommendedLessons) {
-        this.recommendedLessons = recommendedLessons;
+    public String getRecommendedLessonIds() {
+        return recommendedLessonIds;
     }
 
     public String getBasisSnapshot() {
         return basisSnapshot;
     }
 
-    public void setBasisSnapshot(String basisSnapshot) {
-        this.basisSnapshot = basisSnapshot;
-    }
-
     public Double getConfidenceScore() {
         return confidenceScore;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
+
+    public void setRecommendedLessonIds(String recommendedLessonIds) {
+        this.recommendedLessonIds = recommendedLessonIds;
+    }
+
+    public void setBasisSnapshot(String basisSnapshot) {
+        this.basisSnapshot = basisSnapshot;
     }
 
     public void setConfidenceScore(Double confidenceScore) {

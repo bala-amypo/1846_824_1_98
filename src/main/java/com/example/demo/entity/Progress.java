@@ -14,9 +14,9 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.PrePersist;
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
-
+import com.example.enums.ProgressStatus;
 @Entity
-public class Progress {
+public class Progress{
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

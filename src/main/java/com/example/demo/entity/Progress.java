@@ -27,7 +27,7 @@ public class Progress{
     private User user;
 
     @ManyToOne
-    @JoinColumn(name = "micro_id", nullable = false)
+    @JoinColumn(name = "micro_lesson_id", nullable = false)
     private Micro microLesson;
 
     @Enumerated(EnumType.STRING)

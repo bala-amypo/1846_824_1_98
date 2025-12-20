@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.example.demo.dto.ProgressRequestDTO;
 import com.example.demo.entity.Micro;
 import com.example.demo.entity.Progress;
 import com.example.demo.entity.User;
@@ -27,40 +28,41 @@ public class ProgressServiceImpl implements ProgressService {
     private MicroRepository microRepository;
 
     @Override
-    public Progress recordProgress(Long userId, Long lessonId, Progress progress) {
+    public Progress recordProgress(Long userId, Long lessonId, ProgressRequestDTO dto) {
 
         User user = userRepository.findById(userId).orElseThrow();
         Micro lesson = microRepository.findById(lessonId).orElseThrow();
 
-        if (progress.getProgressPercent() < 0 || progress.getProgressPercent() > 100) {
+        if (dto.getProgressPercent() < 0 || dto.getProgressPercent() > 100) {
             throw new IllegalArgumentException("Progress must be between 0 and 100");
         }
 
-        if (progress.getStatus() == ProgressStatus.COMPLETED &&
-            progress.getProgressPercent() != 100) {
-            throw new IllegalArgumentException("Completed lesson must have 100% progress");
+        if (dto.getStatus() == ProgressStatus.COMPLETED &&
+            dto.getProgressPercent() != 100) {
+            throw new IllegalArgumentException("Completed lesson must be 100%");
         }
 
+        Progress progress = new Progress();
         progress.setUser(user);
         progress.setMicroLesson(lesson);
+        progress.setStatus(dto.getStatus());
+        progress.setProgressPercent(dto.getProgressPercent());
+        progress.setScore(dto.getScore());
 
         return progressRepository.save(progress);
     }
 
     @Override
     public Progress getProgress(Long userId, Long lessonId) {
-
         User user = userRepository.findById(userId).orElseThrow();
         Micro lesson = microRepository.findById(lessonId).orElseThrow();
 
-        return progressRepository
-                .findByUserAndMicroLesson(user, lesson)
+        return progressRepository.findByUserAndMicroLesson(user, lesson)
                 .orElseThrow();
     }
 
     @Override
     public List<Progress> getUserProgress(Long userId) {
-
         User user = userRepository.findById(userId).orElseThrow();
         return progressRepository.findByUser(user);
     }

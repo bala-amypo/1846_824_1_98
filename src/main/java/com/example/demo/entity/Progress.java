@@ -95,6 +95,7 @@ public class Progress{
     public void setUser(User user) {
         this.user = user;
     }
+    
 
     public void setMicroLesson(Micro microLesson) {
         this.microLesson = microLesson;

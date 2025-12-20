@@ -14,7 +14,7 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.PrePersist;
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
-import com.example.enums.ProgressStatus;
+import com.example.demo.enums.ProgressStatus;
 @Entity
 public class Progress{
 

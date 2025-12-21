@@ -52,12 +52,8 @@ public class Micro {
 
     @Column(nullable = false, updatable = false)
     private LocalDate publishDate;
-
-    // ✅ 1. Default constructor (MANDATORY for JPA)
     public Micro() {
     }
-
-    // ✅ 2. Parameterized constructor (USEFUL for manual creation)
     public Micro(Course course,
                  String title,
                  Integer durationMinutes,

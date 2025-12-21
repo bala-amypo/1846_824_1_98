@@ -18,25 +18,32 @@ public class Course {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-  
     private String title;
 
     private String description;
 
     private String category;
 
+    @Column(nullable = false, updatable = false)
     private LocalDateTime createdAt;
 
     @ManyToOne
     @JoinColumn(name = "instructor_id")
     private User instructor;
+    public Course() {
+    }
+    public Course(Long id, String title, String description, String category, User instructor) {
+        this.id = id;
+        this.title = title;
+        this.description = description;
+        this.category = category;
+        this.instructor = instructor;
+    }
 
     @PrePersist
     public void prePersist() {
         this.createdAt = LocalDateTime.now();
     }
-
-    public Course() {}
 
     public Long getId() {
         return id;

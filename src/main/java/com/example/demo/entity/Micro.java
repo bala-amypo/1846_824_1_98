@@ -1,11 +1,21 @@
 package com.example.demo.entity;
 
-import jakarta.persistence.*;
+import java.time.LocalDate;
+
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.PrePersist;
+
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
-
-import java.time.LocalDate;
 
 import com.example.demo.enums.ContentType;
 import com.example.demo.enums.Difficulty;
@@ -42,7 +52,6 @@ public class Micro {
 
     @Column(nullable = false, updatable = false)
     private LocalDate publishDate;
-
 
     @PrePersist
     public void onCreate() {

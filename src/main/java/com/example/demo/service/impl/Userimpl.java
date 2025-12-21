@@ -12,7 +12,7 @@ import org.springframework.stereotype.Service;
 public class Userimpl implements Userservice {
 
     @Autowired
-    private UserRepository urp;
+    public UserRepository urp;
 
     @Override
     public User register(User user) {

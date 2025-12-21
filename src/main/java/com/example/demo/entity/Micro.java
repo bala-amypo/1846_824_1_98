@@ -53,6 +53,26 @@ public class Micro {
     @Column(nullable = false, updatable = false)
     private LocalDate publishDate;
 
+    // ✅ 1. Default constructor (MANDATORY for JPA)
+    public Micro() {
+    }
+
+    // ✅ 2. Parameterized constructor (USEFUL for manual creation)
+    public Micro(Course course,
+                 String title,
+                 Integer durationMinutes,
+                 ContentType contentType,
+                 Difficulty difficulty,
+                 String tags) {
+
+        this.course = course;
+        this.title = title;
+        this.durationMinutes = durationMinutes;
+        this.contentType = contentType;
+        this.difficulty = difficulty;
+        this.tags = tags;
+    }
+
     @PrePersist
     public void onCreate() {
         this.publishDate = LocalDate.now();

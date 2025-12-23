@@ -14,5 +14,8 @@ import com.example.demo.service.Courseservice;
 @RestController
 @RequestMapping("/courses")
 public class CourseController {
-    @PostMapping("/{instructr}")
+    @PostMapping("/{instructorId}")
+    public Course createCourse(@PathVariable("instructorId") Long instructorId){
+        
+    }
 }

@@ -24,6 +24,8 @@ public class CourseController {
         course.setCategory(dto.getCategory());
         return courseService.createCourse(course, instructorId);
     }
-    @PutMapping("")
-    public Course updateCourse()
+    @PutMapping("/{courseid}")
+    public Course updateCourse(@PathVariable("courseid") Long courseid,@Valid @Requestbody CourseRequestDTO dto){
+        
+    }
 }

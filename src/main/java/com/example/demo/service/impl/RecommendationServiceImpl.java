@@ -2,14 +2,17 @@ package com.example.demo.service.impl;
 
 import com.example.demo.dto.RecommendationRequest;
 import com.example.demo.exception.ResourceNotFoundException;
-import com.example.demo.model.*;
-import com.example.demo.repository.*;
+import com.example.demo.model.MicroLesson;
+import com.example.demo.model.Recommendation;
+import com.example.demo.model.User;
+import com.example.demo.repository.MicroLessonRepository;
+import com.example.demo.repository.RecommendationRepository;
+import com.example.demo.repository.UserRepository;
 import com.example.demo.service.RecommendationService;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -34,8 +37,7 @@ public class RecommendationServiceImpl implements RecommendationService {
                 .orElseThrow(() -> new ResourceNotFoundException("User not found"));
 
         List<MicroLesson> lessons =
-                lessonRepo.findByTagsContainingAndDifficultyAndContentType(
-                        req.getTags(), req.getDifficulty(), "VIDEO");
+                lessonRepo.findByFilters(req.getTags(), req.getDifficulty(), null);
 
         String lessonIds = lessons.stream()
                 .limit(req.getMaxItems())
@@ -53,20 +55,23 @@ public class RecommendationServiceImpl implements RecommendationService {
     }
 
     @Override
-    public Recommendation getLatest(Long userId) {
-        return repo.findByUserIdOrderByGeneratedAtDesc(userId)
-                .stream()
-                .findFirst()
-                .orElseThrow(() -> new ResourceNotFoundException("No recommendations found"));
-    }
-
-    @Override
     public List<Recommendation> getByDateRange(Long userId,
                                                LocalDate from,
                                                LocalDate to) {
         return repo.findByUserIdAndGeneratedAtBetween(
                 userId,
                 from.atStartOfDay(),
-                to.atTime(23, 59));
+                to.atTime(23, 59)
+        );
+    }
+
+    // ✅ ADDED FOR TEST
+    @Override
+    public Recommendation getLatestRecommendation(Long userId) {
+        return repo.findByUserIdOrderByGeneratedAtDesc(userId)
+                .stream()
+                .findFirst()
+                .orElseThrow(() ->
+                        new ResourceNotFoundException("No recommendation found"));
     }
 }

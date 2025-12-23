@@ -7,7 +7,11 @@ import java.time.LocalDate;
 import java.util.List;
 
 public interface RecommendationService {
+
     Recommendation generate(Long userId, RecommendationRequest request);
-    Recommendation getLatest(Long userId);
+
     List<Recommendation> getByDateRange(Long userId, LocalDate from, LocalDate to);
+
+    // ✅ ADDED FOR TEST
+    Recommendation getLatestRecommendation(Long userId);
 }

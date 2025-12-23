@@ -1,45 +1,36 @@
 package com.example.demo.controller;
 
-import java.util.List;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
-
-import com.example.demo.dto.ProgressRequestDTO;
-import com.example.demo.entity.Progress;
+import com.example.demo.model.Progress;
 import com.example.demo.service.ProgressService;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/progress")
 public class ProgressController {
 
-    @Autowired
-    private ProgressService progressService;
+    private final ProgressService service;
 
-    @PostMapping("/record/{userId}/{lessonId}")
-    public Progress recordProgress(
-            @PathVariable Long userId,
-            @PathVariable Long lessonId,
-            @RequestBody ProgressRequestDTO dto) {
-
-        return progressService.recordProgress(userId, lessonId, dto);
+    public ProgressController(ProgressService service) {
+        this.service = service;
     }
 
-    @GetMapping("/get/{userId}/{lessonId}")
-    public Progress getProgress(
-            @PathVariable Long userId,
-            @PathVariable Long lessonId) {
+    @PostMapping("/{userId}/{lessonId}")
+    public Progress record(@PathVariable Long userId,
+                           @PathVariable Long lessonId,
+                           @RequestBody Progress progress) {
+        return service.recordProgress(userId, lessonId, progress);
+    }
 
-        return progressService.getProgress(userId, lessonId);
+    @GetMapping("/{userId}/{lessonId}")
+    public Progress get(@PathVariable Long userId,
+                        @PathVariable Long lessonId) {
+        return service.getProgress(userId, lessonId);
     }
 
     @GetMapping("/user/{userId}")
-    public List<Progress> getUserProgress(@PathVariable Long userId) {
-        return progressService.getUserProgress(userId);
+    public List<Progress> list(@PathVariable Long userId) {
+        return service.getUserProgress(userId);
     }
 }

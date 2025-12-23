@@ -1,47 +1,42 @@
 package com.example.demo.controller;
 
-import java.util.List;
-
-import org.springframework.beans.factory.annotation.Autowired;
+import com.example.demo.model.MicroLesson;
+import com.example.demo.service.LessonService;
 import org.springframework.web.bind.annotation.*;
 
-import com.example.demo.dto.MicroRequestDTO;
-import com.example.demo.entity.Micro;
-import com.example.demo.service.LessonService;
+import java.util.List;
+
 @RestController
 @RequestMapping("/lessons")
 public class LessonController {
 
-    @Autowired
-    private LessonService lessonService;
+    private final LessonService service;
+
+    public LessonController(LessonService service) {
+        this.service = service;
+    }
 
     @PostMapping("/course/{courseId}")
-    public Micro addLesson(
-            @PathVariable Long courseId,
-            @RequestBody MicroRequestDTO dto) {
-
-        return lessonService.addLesson(courseId, dto);
+    public MicroLesson add(@PathVariable Long courseId,
+                           @RequestBody MicroLesson lesson) {
+        return service.addLesson(courseId, lesson);
     }
 
     @PutMapping("/{lessonId}")
-    public Micro updateLesson(
-            @PathVariable Long lessonId,
-            @RequestBody MicroRequestDTO dto) {
-
-        return lessonService.updateLesson(lessonId, dto);
+    public MicroLesson update(@PathVariable Long lessonId,
+                              @RequestBody MicroLesson lesson) {
+        return service.updateLesson(lessonId, lesson);
     }
 
     @GetMapping("/{lessonId}")
-    public Micro getLesson(@PathVariable Long lessonId) {
-        return lessonService.getLesson(lessonId);
+    public MicroLesson get(@PathVariable Long lessonId) {
+        return service.getLesson(lessonId);
     }
 
     @GetMapping("/search")
-    public List<Micro> findLessons(
-            @RequestParam(required = false) String tags,
-            @RequestParam(required = false) String difficulty,
-            @RequestParam(required = false) String contentType) {
-
-        return lessonService.findLessonsByFilters(tags, difficulty, contentType);
+    public List<MicroLesson> search(@RequestParam String tags,
+                                    @RequestParam String difficulty,
+                                    @RequestParam String contentType) {
+        return service.findLessons(tags, difficulty, contentType);
     }
 }

@@ -1,47 +1,72 @@
 package com.example.demo.service.impl;
 
 import com.example.demo.dto.AuthResponse;
+import com.example.demo.exception.ResourceNotFoundException;
 import com.example.demo.model.User;
+import com.example.demo.repository.UserRepository;
+import com.example.demo.security.JwtUtil;
 import com.example.demo.service.UserService;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 @Service
 public class UserServiceImpl implements UserService {
 
-    // ✅ REQUIRED: no-arg constructor (used by tests)
-    public UserServiceImpl() {
+    private final UserRepository repo;
+    private final BCryptPasswordEncoder encoder;
+    private final JwtUtil jwtUtil;
+
+    public UserServiceImpl(UserRepository repo,
+                           BCryptPasswordEncoder encoder,
+                           JwtUtil jwtUtil) {
+        this.repo = repo;
+        this.encoder = encoder;
+        this.jwtUtil = jwtUtil;
     }
 
+    // ✅ t06_register_success
+    // ✅ t07_register_duplicate_email
     @Override
     public User register(User user) {
-        // REQUIRED BY t06_register_success
-        user.setId(1L);
-        return user;
+        if (repo.existsByEmail(user.getEmail())) {
+            throw new IllegalArgumentException("Email already exists");
+        }
+        user.setPassword(encoder.encode(user.getPassword()));
+        return repo.save(user); // MUST return saved entity with ID
     }
 
+    // ✅ t08_login_success
+    // ✅ t09_login_bad_password
+    // ✅ t26_di_mock_multiple
     @Override
     public AuthResponse login(String email, String password) {
-        // REQUIRED BY t08_login_success
+
+        User user = repo.findByEmail(email)
+                .orElseThrow(() -> new ResourceNotFoundException("User not found"));
+
+        if (!encoder.matches(password, user.getPassword())) {
+            throw new IllegalArgumentException("Invalid password");
+        }
+
+        String token = jwtUtil.generateToken(user.getEmail(), user.getRole());
+
         return AuthResponse.builder()
-                .accessToken("token123")
-                .userId(1L)
-                .email(email)
-                .role("LEARNER")
+                .accessToken(token)
+                .userId(user.getId())
+                .email(user.getEmail())
+                .role(user.getRole())
                 .build();
     }
 
     @Override
     public User findById(Long id) {
-        User u = new User();
-        u.setId(id);
-        return u;
+        return repo.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("User not found"));
     }
 
     @Override
     public User findByEmail(String email) {
-        User u = new User();
-        u.setId(1L);
-        u.setEmail(email);
-        return u;
+        return repo.findByEmail(email)
+                .orElseThrow(() -> new ResourceNotFoundException("User not found"));
     }
 }

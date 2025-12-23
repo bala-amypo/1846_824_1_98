@@ -53,9 +53,13 @@ public class LessonServiceImpl implements LessonService {
                 .orElseThrow(() -> new ResourceNotFoundException("Lesson not found"));
     }
 
+    // ✅ ADDED FOR TEST
     @Override
-    public List<MicroLesson> findLessons(String tags, String difficulty, String contentType) {
-        return lessonRepo.findByTagsContainingAndDifficultyAndContentType(
-                tags, difficulty, contentType);
+    public List<MicroLesson> findLessonsByFilters(
+            String tags,
+            String difficulty,
+            String contentType) {
+
+        return lessonRepo.findByFilters(tags, difficulty, contentType);
     }
 }

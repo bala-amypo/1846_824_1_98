@@ -1,4 +1,3 @@
-
 package com.example.demo.service.impl;
 
 import com.example.demo.dto.AuthResponse;
@@ -56,6 +55,13 @@ public class UserServiceImpl implements UserService {
     @Override
     public User findById(Long id) {
         return repo.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("User not found"));
+    }
+
+    // ✅ ADDED FOR TEST
+    @Override
+    public User findByEmail(String email) {
+        return repo.findByEmail(email)
                 .orElseThrow(() -> new ResourceNotFoundException("User not found"));
     }
 }

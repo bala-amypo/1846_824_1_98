@@ -24,6 +24,6 @@ public class CourseController {
         course.setCategory(dto.getCategory());
         return courseService.createCourse(course, instructorId);
     }
-
-    
+    @PutMapping("")
+    public Course updateCourse()
 }

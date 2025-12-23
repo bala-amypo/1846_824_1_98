@@ -1,65 +1,72 @@
 package com.example.demo.service.impl;
 
+import com.example.demo.dto.RecommendationRequest;
+import com.example.demo.exception.ResourceNotFoundException;
+import com.example.demo.model.*;
+import com.example.demo.repository.*;
+import com.example.demo.service.RecommendationService;
+import org.springframework.stereotype.Service;
+
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
-import com.example.demo.dto.RecommendationRequest;
-import com.example.demo.entity.Recommendation;
-import com.example.demo.entity.User;
-import com.example.demo.repo.RecommendRepository;
-import com.example.demo.repo.UserRepository;
-import com.example.demo.service.RecommendationService;
+import java.util.stream.Collectors;
 
 @Service
 public class RecommendationServiceImpl implements RecommendationService {
 
-    @Autowired
-    private RecommendRepository recommendRepository;
+    private final RecommendationRepository repo;
+    private final UserRepository userRepo;
+    private final MicroLessonRepository lessonRepo;
 
-    @Autowired
-    private UserRepository userRepository;
-
-    @Override
-    public Recommendation generateRecommendation(Long userId, RecommendationRequest request) {
-
-        if (request.getConfidenceScore() < 0.0 || request.getConfidenceScore() > 1.0) {
-            throw new IllegalArgumentException("Confidence score must be between 0.0 and 1.0");
-        }
-
-        User user = userRepository.findById(userId).orElseThrow();
-
-        Recommendation recommendation = new Recommendation();
-        recommendation.setUser(user);
-        recommendation.setBasisSnapshot(request.getBasisSnapshot());
-        recommendation.setRecommendedLessonIds(request.getRecommendedLessonIds());
-        recommendation.setConfidenceScore(request.getConfidenceScore());
-
-        return recommendRepository.save(recommendation);
+    public RecommendationServiceImpl(RecommendationRepository repo,
+                                     UserRepository userRepo,
+                                     MicroLessonRepository lessonRepo) {
+        this.repo = repo;
+        this.userRepo = userRepo;
+        this.lessonRepo = lessonRepo;
     }
 
     @Override
-    public Recommendation getLatestRecommendation(Long userId) {
-        User user = userRepository.findById(userId).orElseThrow();
-        return recommendRepository.findTopByUserOrderByGeneratedAtDesc(user)
-                .orElseThrow();
+    public Recommendation generate(Long userId, RecommendationRequest req) {
+        User user = userRepo.findById(userId)
+                .orElseThrow(() -> new ResourceNotFoundException("User not found"));
+
+        List<MicroLesson> lessons =
+                lessonRepo.findByTagsContainingAndDifficultyAndContentType(
+                        req.getTags(), req.getDifficulty(), "VIDEO");
+
+        String lessonIds = lessons.stream()
+                .limit(req.getMaxItems())
+                .map(l -> l.getId().toString())
+                .collect(Collectors.joining(","));
+
+        Recommendation rec = Recommendation.builder()
+                .user(user)
+                .recommendedLessonIds(lessonIds)
+                .basisSnapshot("Auto-generated")
+                .confidenceScore(BigDecimal.valueOf(0.85))
+                .build();
+
+        return repo.save(rec);
     }
 
     @Override
-    public List<Recommendation> getRecommendations(Long userId, LocalDate from, LocalDate to) {
+    public Recommendation getLatest(Long userId) {
+        return repo.findByUserIdOrderByGeneratedAtDesc(userId)
+                .stream()
+                .findFirst()
+                .orElseThrow(() -> new ResourceNotFoundException("No recommendations found"));
+    }
 
-        User user = userRepository.findById(userId).orElseThrow();
-
-        LocalDateTime fromDate = from.atStartOfDay();
-        LocalDateTime toDate = to.atTime(23, 59, 59);
-
-        return recommendRepository.findByUserAndGeneratedAtBetween(
-                user,
-                fromDate,
-                toDate
-        );
+    @Override
+    public List<Recommendation> getByDateRange(Long userId,
+                                               LocalDate from,
+                                               LocalDate to) {
+        return repo.findByUserIdAndGeneratedAtBetween(
+                userId,
+                from.atStartOfDay(),
+                to.atTime(23, 59));
     }
 }

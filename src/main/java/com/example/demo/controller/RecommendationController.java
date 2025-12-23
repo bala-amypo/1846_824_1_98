@@ -24,9 +24,10 @@ public class RecommendationController {
         return service.generate(userId, request);
     }
 
+    // ✅ FIXED METHOD NAME
     @GetMapping("/latest/{userId}")
     public Recommendation latest(@PathVariable Long userId) {
-        return service.getLatest(userId);
+        return service.getLatestRecommendation(userId);
     }
 
     @GetMapping("/{userId}")

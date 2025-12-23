@@ -1,0 +1,61 @@
+
+package com.example.demo.service.impl;
+
+import com.example.demo.dto.AuthResponse;
+import com.example.demo.exception.ResourceNotFoundException;
+import com.example.demo.model.User;
+import com.example.demo.repository.UserRepository;
+import com.example.demo.security.JwtUtil;
+import com.example.demo.service.UserService;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.stereotype.Service;
+
+@Service
+public class UserServiceImpl implements UserService {
+
+    private final UserRepository repo;
+    private final BCryptPasswordEncoder encoder;
+    private final JwtUtil jwtUtil;
+
+    public UserServiceImpl(UserRepository repo,
+                           BCryptPasswordEncoder encoder,
+                           JwtUtil jwtUtil) {
+        this.repo = repo;
+        this.encoder = encoder;
+        this.jwtUtil = jwtUtil;
+    }
+
+    @Override
+    public User register(User user) {
+        if (repo.existsByEmail(user.getEmail())) {
+            throw new IllegalArgumentException("Email already exists");
+        }
+        user.setPassword(encoder.encode(user.getPassword()));
+        return repo.save(user);
+    }
+
+    @Override
+    public AuthResponse login(String email, String password) {
+        User user = repo.findByEmail(email)
+                .orElseThrow(() -> new ResourceNotFoundException("User not found"));
+
+        if (!encoder.matches(password, user.getPassword())) {
+            throw new IllegalArgumentException("Invalid credentials");
+        }
+
+        String token = jwtUtil.generateToken(user.getEmail(), user.getRole());
+
+        return AuthResponse.builder()
+                .accessToken(token)
+                .userId(user.getId())
+                .email(user.getEmail())
+                .role(user.getRole())
+                .build();
+    }
+
+    @Override
+    public User findById(Long id) {
+        return repo.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("User not found"));
+    }
+}

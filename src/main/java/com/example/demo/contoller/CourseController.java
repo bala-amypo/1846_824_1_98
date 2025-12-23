@@ -15,7 +15,9 @@ import com.example.demo.service.Courseservice;
 @RequestMapping("/courses")
 public class CourseController {
     @PostMapping("/{instructorId}")
-    public Course createCourse(@PathVariable("instructorId") Long instructorId){
-        
+    public Course createCourse(
+        @Valid @RequestBody CourseRequestDTO dto,,
+        @PathVariable("instructorId") Long instructorId){
+        Course pp=
     }
 }

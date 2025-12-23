@@ -1,20 +1,13 @@
 package com.example.demo.dto;
 
+import lombok.Builder;
+import lombok.Getter;
+
+@Getter
+@Builder
 public class AuthResponse {
-
-    private String message;
-    private boolean success;
-
-    public AuthResponse(String message, boolean success) {
-        this.message = message;
-        this.success = success;
-    }
-
-    public String getMessage() {
-        return message;
-    }
-
-    public boolean isSuccess() {
-        return success;
-    }
+    private String accessToken;
+    private Long userId;
+    private String email;
+    private String role;
 }

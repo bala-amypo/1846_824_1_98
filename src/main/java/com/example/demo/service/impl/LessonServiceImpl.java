@@ -1,90 +1,61 @@
 package com.example.demo.service.impl;
 
-import java.util.List;
-
-import org.springframework.beans.factory.annotation.Autowired;
+import com.example.demo.exception.ResourceNotFoundException;
+import com.example.demo.model.Course;
+import com.example.demo.model.MicroLesson;
+import com.example.demo.repository.CourseRepository;
+import com.example.demo.repository.MicroLessonRepository;
+import com.example.demo.service.LessonService;
 import org.springframework.stereotype.Service;
 
-import com.example.demo.dto.MicroRequestDTO;
-import com.example.demo.entity.Course;
-import com.example.demo.entity.Micro;
-import com.example.demo.enums.ContentType;
-import com.example.demo.enums.Difficulty;
-import com.example.demo.repo.CourseRepository;
-import com.example.demo.repo.MicroRepository;
-import com.example.demo.service.LessonService;
+import java.util.List;
+
 @Service
 public class LessonServiceImpl implements LessonService {
 
-    @Autowired
-    private MicroRepository microRepo;
+    private final MicroLessonRepository lessonRepo;
+    private final CourseRepository courseRepo;
 
-    @Autowired
-    private CourseRepository courseRepo;
+    public LessonServiceImpl(MicroLessonRepository lessonRepo,
+                             CourseRepository courseRepo) {
+        this.lessonRepo = lessonRepo;
+        this.courseRepo = courseRepo;
+    }
 
     @Override
-    public Micro addLesson(Long courseId, MicroRequestDTO dto) {
-
+    public MicroLesson addLesson(Long courseId, MicroLesson lesson) {
         Course course = courseRepo.findById(courseId)
-                .orElseThrow(() -> new RuntimeException("Course not found"));
+                .orElseThrow(() -> new ResourceNotFoundException("Course not found"));
 
-        Micro micro = new Micro();
-        micro.setCourse(course);
-        micro.setTitle(dto.getTitle());
-        micro.setDurationMinutes(dto.getDurationMinutes());
-        micro.setTags(dto.getTags());
+        if (lesson.getDurationMinutes() <= 0 || lesson.getDurationMinutes() > 15) {
+            throw new IllegalArgumentException("Duration must be between 1 and 15 minutes");
+        }
 
-        micro.setDifficulty(
-                Difficulty.valueOf(dto.getDifficulty().toUpperCase())
-        );
-        micro.setContentType(
-                ContentType.valueOf(dto.getContentType().toUpperCase())
-        );
-
-        return microRepo.save(micro);
+        lesson.setCourse(course);
+        return lessonRepo.save(lesson);
     }
 
     @Override
-    public Micro updateLesson(Long lessonId, MicroRequestDTO dto) {
-
-        Micro existing = microRepo.findById(lessonId)
-                .orElseThrow(() -> new RuntimeException("Lesson not found"));
-
-        existing.setTitle(dto.getTitle());
-        existing.setDurationMinutes(dto.getDurationMinutes());
-        existing.setTags(dto.getTags());
-
-        existing.setDifficulty(
-                Difficulty.valueOf(dto.getDifficulty().toUpperCase())
-        );
-        existing.setContentType(
-                ContentType.valueOf(dto.getContentType().toUpperCase())
-        );
-
-        return microRepo.save(existing);
+    public MicroLesson updateLesson(Long lessonId, MicroLesson lesson) {
+        MicroLesson existing = getLesson(lessonId);
+        existing.setTitle(lesson.getTitle());
+        existing.setDurationMinutes(lesson.getDurationMinutes());
+        existing.setContentType(lesson.getContentType());
+        existing.setDifficulty(lesson.getDifficulty());
+        existing.setTags(lesson.getTags());
+        existing.setPublishDate(lesson.getPublishDate());
+        return lessonRepo.save(existing);
     }
 
     @Override
-    public Micro getLesson(Long lessonId) {
-        return microRepo.findById(lessonId)
-                .orElseThrow(() -> new RuntimeException("Lesson not found"));
+    public MicroLesson getLesson(Long lessonId) {
+        return lessonRepo.findById(lessonId)
+                .orElseThrow(() -> new ResourceNotFoundException("Lesson not found"));
     }
 
     @Override
-    public List<Micro> findLessonsByFilters(
-            String tags,
-            String difficulty,
-            String contentType) {
-
-        if (tags == null) tags = "";
-        Difficulty diff = difficulty != null
-                ? Difficulty.valueOf(difficulty.toUpperCase())
-                : null;
-
-        ContentType type = contentType != null
-                ? ContentType.valueOf(contentType.toUpperCase())
-                : null;
-
-        return microRepo.search(tags, diff, type);
+    public List<MicroLesson> findLessons(String tags, String difficulty, String contentType) {
+        return lessonRepo.findByTagsContainingAndDifficultyAndContentType(
+                tags, difficulty, contentType);
     }
 }

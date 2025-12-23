@@ -1,54 +1,61 @@
 package com.example.demo.service.impl;
 
-import java.util.List;
-
-import org.springframework.beans.factory.annotation.Autowired;
+import com.example.demo.exception.ResourceNotFoundException;
+import com.example.demo.model.Course;
+import com.example.demo.model.User;
+import com.example.demo.repository.CourseRepository;
+import com.example.demo.repository.UserRepository;
+import com.example.demo.service.CourseService;
 import org.springframework.stereotype.Service;
 
-import com.example.demo.entity.Course;
-import com.example.demo.entity.User;
-import com.example.demo.repo.CourseRepository;
-import com.example.demo.repo.UserRepository;
-import com.example.demo.service.Courseservice;
+import java.util.List;
 
 @Service
-public class CourseServiceImpl implements Courseservice {
+public class CourseServiceImpl implements CourseService {
 
-    @Autowired
-    private CourseRepository courseRepo;
+    private final CourseRepository courseRepo;
+    private final UserRepository userRepo;
 
-    @Autowired
-    private UserRepository userRepo;
+    public CourseServiceImpl(CourseRepository courseRepo, UserRepository userRepo) {
+        this.courseRepo = courseRepo;
+        this.userRepo = userRepo;
+    }
 
     @Override
     public Course createCourse(Course course, Long instructorId) {
+        User instructor = userRepo.findById(instructorId)
+                .orElseThrow(() -> new ResourceNotFoundException("Instructor not found"));
 
-        User instructor = userRepo.findById(instructorId).orElse(null);
+        if (!instructor.getRole().equals("INSTRUCTOR") &&
+            !instructor.getRole().equals("ADMIN")) {
+            throw new IllegalArgumentException("Only INSTRUCTOR or ADMIN can create courses");
+        }
+
+        if (courseRepo.existsByTitleAndInstructorId(course.getTitle(), instructorId)) {
+            throw new IllegalArgumentException("Course title already exists for this instructor");
+        }
+
         course.setInstructor(instructor);
-
         return courseRepo.save(course);
     }
 
     @Override
     public Course updateCourse(Long courseId, Course course) {
-
         Course existing = getCourse(courseId);
-        if (existing != null) {
-            existing.setTitle(course.getTitle());
-            existing.setDescription(course.getDescription());
-            existing.setCategory(course.getCategory());
-            return courseRepo.save(existing);
-        }
-        return null;
+        existing.setTitle(course.getTitle());
+        existing.setDescription(course.getDescription());
+        existing.setCategory(course.getCategory());
+        return courseRepo.save(existing);
+    }
+
+    @Override
+    public Course getCourse(Long courseId) {
+        return courseRepo.findById(courseId)
+                .orElseThrow(() -> new ResourceNotFoundException("Course not found"));
     }
 
     @Override
     public List<Course> listCoursesByInstructor(Long instructorId) {
         return courseRepo.findByInstructor_Id(instructorId);
-    }
-
-    @Override
-    public Course getCourse(Long courseId) {
-        return courseRepo.findById(courseId).orElse(null);
     }
 }

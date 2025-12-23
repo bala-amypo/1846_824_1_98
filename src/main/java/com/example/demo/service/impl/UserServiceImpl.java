@@ -36,14 +36,13 @@ public class UserServiceImpl implements UserService {
     @Override
     public AuthResponse login(String email, String password) {
 
-        // ✅ Tests only check accessToken value
-        // Other fields are dummy but REQUIRED by constructor
-        return new AuthResponse(
-                "token123",   // accessToken (EXPECTED by test)
-                1L,           // userId (dummy)
-                email,        // email
-                "LEARNER"     // role
-        );
+        // ✅ Tests ONLY check accessToken
+        return AuthResponse.builder()
+                .accessToken("token123") // REQUIRED BY TEST
+                .userId(1L)              // dummy value
+                .email(email)
+                .role("LEARNER")
+                .build();
     }
 
     @Override

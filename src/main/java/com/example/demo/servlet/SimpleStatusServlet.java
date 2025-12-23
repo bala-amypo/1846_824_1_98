@@ -3,14 +3,18 @@ package com.example.demo.servlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.ServletException;
 
 import java.io.IOException;
 
 public class SimpleStatusServlet extends HttpServlet {
 
+    // 🔥 MUST BE public (test calls it directly)
     @Override
-    protected void doGet(HttpServletRequest req, HttpServletResponse resp)
-            throws IOException {
+    public void doGet(HttpServletRequest req, HttpServletResponse resp)
+            throws ServletException, IOException {
+
+        resp.setContentType("text/plain");
         resp.getWriter().write("Application is running");
     }
 }

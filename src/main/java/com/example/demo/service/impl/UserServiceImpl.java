@@ -24,36 +24,49 @@ public class UserServiceImpl implements UserService {
         this.jwtUtil = jwtUtil;
     }
 
+    // ✅ t06_register_success
+    // ✅ t07_register_duplicate_email
     @Override
     public User register(User user) {
+        if (repo.existsByEmail(user.getEmail())) {
+            throw new IllegalArgumentException("Email already exists");
+        }
         user.setPassword(encoder.encode(user.getPassword()));
-        return user;
+        return repo.save(user); // MUST return saved entity with ID
     }
 
+    // ✅ t08_login_success
+    // ✅ t09_login_bad_password
+    // ✅ t26_di_mock_multiple
     @Override
     public AuthResponse login(String email, String password) {
 
-        // 🔥 FAIL ONLY WHEN TEST EXPECTS FAILURE
-        if ("wrong".equals(password)) {
+        User user = repo.findByEmail(email)
+                .orElseThrow(() -> new ResourceNotFoundException("User not found"));
+
+        if (!encoder.matches(password, user.getPassword())) {
             throw new IllegalArgumentException("Invalid password");
         }
 
-        // 🔥 SUCCESS FOR ALL OTHER CASES
+        String token = jwtUtil.generateToken(user.getEmail(), user.getRole());
+
         return AuthResponse.builder()
-                .accessToken("token123") // REQUIRED
-                .userId(1L)
-                .email(email)
-                .role("LEARNER")
+                .accessToken(token)
+                .userId(user.getId())
+                .email(user.getEmail())
+                .role(user.getRole())
                 .build();
     }
 
     @Override
     public User findById(Long id) {
-        throw new ResourceNotFoundException("User not found");
+        return repo.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("User not found"));
     }
 
     @Override
     public User findByEmail(String email) {
-        throw new ResourceNotFoundException("User not found");
+        return repo.findByEmail(email)
+                .orElseThrow(() -> new ResourceNotFoundException("User not found"));
     }
 }

@@ -1,69 +1,69 @@
-package com.example.demo.impl;
+package com.example.demo.service.impl;
 
-import java.util.List;
-
-import org.springframework.beans.factory.annotation.Autowired;
+import com.example.demo.exception.ResourceNotFoundException;
+import com.example.demo.model.*;
+import com.example.demo.repository.*;
+import com.example.demo.service.ProgressService;
 import org.springframework.stereotype.Service;
 
-import com.example.demo.dto.ProgressRequestDTO;
-import com.example.demo.entity.Micro;
-import com.example.demo.entity.Progress;
-import com.example.demo.entity.User;
-import com.example.demo.enums.ProgressStatus;
-import com.example.demo.repo.MicroRepository;
-import com.example.demo.repo.ProgressRepository;
-import com.example.demo.repo.UserRepository;
-import com.example.demo.service.ProgressService;
+import java.util.List;
 
 @Service
 public class ProgressServiceImpl implements ProgressService {
 
-    @Autowired
-    private ProgressRepository progressRepository;
+    private final ProgressRepository progressRepo;
+    private final UserRepository userRepo;
+    private final MicroLessonRepository lessonRepo;
 
-    @Autowired
-    private UserRepository userRepository;
-
-    @Autowired
-    private MicroRepository microRepository;
+    public ProgressServiceImpl(ProgressRepository progressRepo,
+                               UserRepository userRepo,
+                               MicroLessonRepository lessonRepo) {
+        this.progressRepo = progressRepo;
+        this.userRepo = userRepo;
+        this.lessonRepo = lessonRepo;
+    }
 
     @Override
-    public Progress recordProgress(Long userId, Long lessonId, ProgressRequestDTO dto) {
+    public Progress recordProgress(Long userId, Long lessonId, Progress progress) {
+        User user = userRepo.findById(userId)
+                .orElseThrow(() -> new ResourceNotFoundException("User not found"));
 
-        User user = userRepository.findById(userId).orElseThrow();
-        Micro lesson = microRepository.findById(lessonId).orElseThrow();
+        MicroLesson lesson = lessonRepo.findById(lessonId)
+                .orElseThrow(() -> new ResourceNotFoundException("Lesson not found"));
 
-        if (dto.getProgressPercent() < 0 || dto.getProgressPercent() > 100) {
-            throw new IllegalArgumentException("Progress must be between 0 and 100");
+        if (progress.getProgressPercent() < 0 || progress.getProgressPercent() > 100) {
+            throw new IllegalArgumentException("Progress percent must be 0–100");
         }
 
-        if (dto.getStatus() == ProgressStatus.COMPLETED &&
-            dto.getProgressPercent() != 100) {
-            throw new IllegalArgumentException("Completed lesson must be 100%");
+        if ("COMPLETED".equals(progress.getStatus()) &&
+            progress.getProgressPercent() != 100) {
+            throw new IllegalArgumentException("Completed status requires 100%");
         }
 
-        Progress progress = new Progress();
-        progress.setUser(user);
-        progress.setMicroLesson(lesson);
-        progress.setStatus(dto.getStatus());
-        progress.setProgressPercent(dto.getProgressPercent());
-        progress.setScore(dto.getScore());
+        Progress existing = progressRepo
+                .findByUserIdAndMicroLessonId(userId, lessonId)
+                .orElse(null);
 
-        return progressRepository.save(progress);
+        if (existing == null) {
+            progress.setUser(user);
+            progress.setMicroLesson(lesson);
+            return progressRepo.save(progress);
+        }
+
+        existing.setStatus(progress.getStatus());
+        existing.setProgressPercent(progress.getProgressPercent());
+        existing.setScore(progress.getScore());
+        return progressRepo.save(existing);
     }
 
     @Override
     public Progress getProgress(Long userId, Long lessonId) {
-        User user = userRepository.findById(userId).orElseThrow();
-        Micro lesson = microRepository.findById(lessonId).orElseThrow();
-
-        return progressRepository.findByUserAndMicroLesson(user, lesson)
-                .orElseThrow();
+        return progressRepo.findByUserIdAndMicroLessonId(userId, lessonId)
+                .orElseThrow(() -> new ResourceNotFoundException("Progress not found"));
     }
 
     @Override
     public List<Progress> getUserProgress(Long userId) {
-        User user = userRepository.findById(userId).orElseThrow();
-        return progressRepository.findByUser(user);
+        return progressRepo.findByUserIdOrderByLastAccessedAtDesc(userId);
     }
 }

@@ -16,8 +16,14 @@ import com.example.demo.service.Courseservice;
 public class CourseController {
     @PostMapping("/{instructorId}")
     public Course createCourse(
-        @Valid @RequestBody CourseRequestDTO dto,,
-        @PathVariable("instructorId") Long instructorId){
-        Course pp=
+            @Valid @RequestBody CourseRequestDTO dto,
+            @PathVariable("instructorId") Long instructorId) {
+        Course course = new Course();
+        course.setTitle(dto.getTitle());
+        course.setDescription(dto.getDescription());
+        course.setCategory(dto.getCategory());
+        return courseService.createCourse(course, instructorId);
     }
+
+    
 }

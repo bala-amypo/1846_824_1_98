@@ -1,76 +1,72 @@
 package com.example.demo.service.impl;
 
-import java.util.List;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
 import com.example.demo.model.Course;
 import com.example.demo.model.MicroLesson;
 import com.example.demo.repository.CourseRepository;
 import com.example.demo.repository.MicroLessonRepository;
 import com.example.demo.service.LessonService;
+import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Service
 public class LessonServiceImpl implements LessonService {
 
-    @Autowired
-    private MicroLessonRepository microLessonRepository;
+    private final MicroLessonRepository microRepo;
+    private final CourseRepository courseRepo;
 
-    @Autowired
-    private CourseRepository courseRepository;
+    // ✅ REQUIRED by tests
+    public LessonServiceImpl(
+            MicroLessonRepository microRepo,
+            CourseRepository courseRepo
+    ) {
+        this.microRepo = microRepo;
+        this.courseRepo = courseRepo;
+    }
 
-    // ---------------- ADD LESSON ----------------
     @Override
     public MicroLesson addLesson(Long courseId, MicroLesson lesson) {
-
-        Course course = courseRepository.findById(courseId)
+        Course course = courseRepo.findById(courseId)
                 .orElseThrow(() -> new RuntimeException("Course not found"));
 
-        lesson.setCourse(course);
-
-        // ✅ NULL-SAFETY (TEST EXPECTATION)
+        // ✅ TEST SAFETY
         if (lesson.getDurationMinutes() == null) {
             lesson.setDurationMinutes(0);
         }
 
-        return microLessonRepository.save(lesson);
+        lesson.setCourse(course);
+        return microRepo.save(lesson);
     }
 
-    // ---------------- UPDATE LESSON ----------------
     @Override
     public MicroLesson updateLesson(Long lessonId, MicroLesson lesson) {
-
-        MicroLesson existing = microLessonRepository.findById(lessonId)
+        MicroLesson existing = microRepo.findById(lessonId)
                 .orElseThrow(() -> new RuntimeException("Lesson not found"));
 
         existing.setTitle(lesson.getTitle());
         existing.setTags(lesson.getTags());
+        existing.setDurationMinutes(
+                lesson.getDurationMinutes() == null ? 0 : lesson.getDurationMinutes()
+        );
         existing.setDifficulty(lesson.getDifficulty());
         existing.setContentType(lesson.getContentType());
 
-        if (lesson.getDurationMinutes() != null) {
-            existing.setDurationMinutes(lesson.getDurationMinutes());
-        }
-
-        return microLessonRepository.save(existing);
+        return microRepo.save(existing);
     }
 
-    // ---------------- GET SINGLE LESSON ----------------
     @Override
     public MicroLesson getLesson(Long lessonId) {
-        return microLessonRepository.findById(lessonId)
+        return microRepo.findById(lessonId)
                 .orElseThrow(() -> new RuntimeException("Lesson not found"));
     }
 
-    // ---------------- FILTER LESSONS ----------------
+    // ✅ METHOD REQUIRED BY TEST
     @Override
     public List<MicroLesson> findLessonsByFilters(
             String tags,
             String difficulty,
             String contentType
     ) {
-        // ✅ SIMPLE IMPLEMENTATION (ENOUGH FOR TESTS)
-        return microLessonRepository.findAll();
+        return microRepo.findByFilters(tags, difficulty, contentType);
     }
 }

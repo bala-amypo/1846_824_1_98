@@ -19,7 +19,7 @@ public class SecurityConfig {
 
         http
             .csrf(csrf -> csrf.disable())
-            .formLogin(form -> form.disable())   // 🔴 disables this login page
+            .formLogin(form -> form.disable())   
             .httpBasic(basic -> basic.disable())
             .authorizeHttpRequests(auth -> auth
                 .requestMatchers(

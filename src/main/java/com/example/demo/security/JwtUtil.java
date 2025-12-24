@@ -11,8 +11,6 @@ import java.util.Map;
 public class JwtUtil {
 
     private final String secret = "SECRET_KEY_123";
-
-    // ✅ Used by application logic
     public String generateToken(String email, String role) {
         return Jwts.builder()
                 .setSubject(email)
@@ -22,8 +20,6 @@ public class JwtUtil {
                 .signWith(SignatureAlgorithm.HS256, secret)
                 .compact();
     }
-
-    // ✅ REQUIRED BY t50_jwt_generate_token
     public String generateToken(Map<String, Object> claims, String subject) {
         return "jwt-token";
     }

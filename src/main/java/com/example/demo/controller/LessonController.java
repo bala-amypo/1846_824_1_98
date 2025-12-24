@@ -33,7 +33,6 @@ public class LessonController {
         return service.getLesson(lessonId);
     }
 
-    // ✅ FIXED METHOD NAME
     @GetMapping("/search")
     public List<MicroLesson> search(@RequestParam(required = false) String tags,
                                     @RequestParam(required = false) String difficulty,

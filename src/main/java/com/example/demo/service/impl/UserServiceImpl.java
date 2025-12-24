@@ -16,6 +16,7 @@ public class UserServiceImpl implements UserService {
     private final BCryptPasswordEncoder encoder;
     private final JwtUtil jwtUtil;
 
+    // ⚠️ DO NOT CHANGE (Mockito uses this)
     public UserServiceImpl(UserRepository repo,
                            BCryptPasswordEncoder encoder,
                            JwtUtil jwtUtil) {
@@ -31,8 +32,11 @@ public class UserServiceImpl implements UserService {
         if (repo.existsByEmail(user.getEmail())) {
             throw new IllegalArgumentException("Email already exists");
         }
+
         user.setPassword(encoder.encode(user.getPassword()));
-        return repo.save(user); // MUST return saved entity with ID
+
+        // MUST return saved user with ID
+        return repo.save(user);
     }
 
     // ✅ t08_login_success

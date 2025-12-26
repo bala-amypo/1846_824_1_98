@@ -13,38 +13,30 @@ import org.springframework.web.bind.annotation.*;
 public class AuthController {
 
     private final UserService userService;
-    private final PasswordEncoder passwordEncoder;
+    private final PasswordEncoder encoder;
     private final JwtUtil jwtUtil;
 
-    public AuthController(
-            UserService userService,
-            PasswordEncoder passwordEncoder,
-            JwtUtil jwtUtil) {
+    public AuthController(UserService userService,
+                          PasswordEncoder encoder,
+                          JwtUtil jwtUtil) {
         this.userService = userService;
-        this.passwordEncoder = passwordEncoder;
+        this.encoder = encoder;
         this.jwtUtil = jwtUtil;
     }
 
-    // ✅ REGISTER
     @PostMapping("/register")
     public String register(@RequestBody User user) {
+        user.setPassword(encoder.encode(user.getPassword()));
         userService.register(user);
         return "User registered successfully";
     }
 
-    // ✅ LOGIN → RETURNS JWT TOKEN
     @PostMapping("/login")
     public AuthResponse login(@RequestBody AuthRequest request) {
 
         User user = userService.findByEmail(request.getEmail());
 
-        if (user == null) {
-            throw new RuntimeException("User not found");
-        }
-
-        if (!passwordEncoder.matches(
-                request.getPassword(),
-                user.getPassword())) {
+        if (!encoder.matches(request.getPassword(), user.getPassword())) {
             throw new RuntimeException("Invalid credentials");
         }
 

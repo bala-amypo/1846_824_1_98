@@ -24,6 +24,7 @@ public class UserServiceImpl implements UserService {
         this.jwtUtil = jwtUtil;
     }
 
+    // ✅ REGISTER
     @Override
     public User register(User user) {
         if (repo.existsByEmail(user.getEmail())) {
@@ -33,6 +34,7 @@ public class UserServiceImpl implements UserService {
         return repo.save(user);
     }
 
+    // ✅ LOGIN → RETURNS JWT TOKEN
     @Override
     public AuthResponse login(String email, String password) {
 
@@ -48,17 +50,14 @@ public class UserServiceImpl implements UserService {
                 user.getRole()
         );
 
-        return AuthResponse.builder()
-                .accessToken(token)
-                .userId(user.getId())
-                .email(user.getEmail())
-                .role(user.getRole())
-                .build();
+        // ✅ CONSTRUCTOR (NO BUILDER)
+        return new AuthResponse(token, user.getRole());
     }
 
     @Override
     public User findByEmail(String email) {
-        return repo.findByEmail(email).orElse(null);
+        return repo.findByEmail(email)
+                .orElseThrow(() -> new RuntimeException("User not found"));
     }
 
     @Override

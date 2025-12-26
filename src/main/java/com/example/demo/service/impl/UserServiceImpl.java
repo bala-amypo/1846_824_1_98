@@ -44,7 +44,7 @@ public class UserServiceImpl implements UserService {
             throw new IllegalArgumentException("Invalid password");
         }
 
-        // 🔥 MUST BE token123
+        // 🔥 token123
         String token = jwtUtil.generateToken(user.getEmail(), user.getRole());
 
         return new AuthResponse(

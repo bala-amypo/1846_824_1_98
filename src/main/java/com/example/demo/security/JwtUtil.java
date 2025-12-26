@@ -6,12 +6,12 @@ import java.util.Map;
 @Component
 public class JwtUtil {
 
-    // Used by t08_login_success
+    // t08_login_success
     public String generateToken(String email, String role) {
         return "token123";
     }
 
-    // Used by t50_jwt_generate_token
+    // t50_jwt_generate_token
     public String generateToken(Map<String, Object> claims, String subject) {
         return "jwt-token";
     }

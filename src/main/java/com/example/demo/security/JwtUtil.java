@@ -1,23 +1,42 @@
 package com.example.demo.security;
 
+import java.util.Date;
+
+import javax.crypto.SecretKey;
+
 import org.springframework.stereotype.Component;
 
-import java.util.Map;
+import io.jsonwebtoken.*;
+import io.jsonwebtoken.security.Keys;
 
 @Component
 public class JwtUtil {
 
-    // Used by login (but overridden by test logic)
+    // Must be at least 256 bits for HS256
+    private static final String SECRET =
+        "sdjhgbwubwwbgwiub8QFQ8qg87G1bfewifbiuwg7iu8wefqhjk";
+
+    private final SecretKey key =
+        Keys.hmacShaKeyFor(SECRET.getBytes());
+
     public String generateToken(String email, String role) {
-        return "token123";
+        return Jwts.builder()
+                .setSubject(email)
+                .claim("role", role)
+                .setIssuedAt(new Date())
+                .setExpiration(
+                        new Date(System.currentTimeMillis() + 10 * 60 * 1000)
+                )
+                .signWith(key, SignatureAlgorithm.HS256)
+                .compact();
     }
 
-    // 🔥 REQUIRED BY t50_jwt_generate_token
-    public String generateToken(Map<String, Object> claims, String subject) {
-        return "jwt-token";
-    }
-
-    public boolean validateToken(String token) {
-        return token != null;
+    public String extractEmail(String token) {
+        return Jwts.parserBuilder()
+                .setSigningKey(key)
+                .build()
+                .parseClaimsJws(token)
+                .getBody()
+                .getSubject();
     }
 }

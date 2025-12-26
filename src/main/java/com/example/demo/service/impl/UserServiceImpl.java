@@ -48,11 +48,12 @@ public class UserServiceImpl implements UserService {
         String token = jwtUtil.generateToken(user.getEmail(), user.getRole());
 
         return AuthResponse.builder()
-                .accessToken(token)
-                .userId(user.getId())
-                .email(user.getEmail())
-                .role(user.getRole())
-                .build();
+        .token(token)     // 🔥 MUST BE token
+        .userId(user.getId())
+        .email(user.getEmail())
+        .role(user.getRole())
+        .build();
+
     }
 
     @Override

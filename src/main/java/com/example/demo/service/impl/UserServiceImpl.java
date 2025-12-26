@@ -37,13 +37,14 @@ public class UserServiceImpl implements UserService {
     public AuthResponse login(String email, String password) {
 
         User user = repo.findByEmail(email)
-                .orElseThrow(() -> new ResourceNotFoundException("User not found"));
+                .orElseThrow(() ->
+                        new ResourceNotFoundException("User not found"));
 
         if (!encoder.matches(password, user.getPassword())) {
             throw new IllegalArgumentException("Invalid password");
         }
 
-        // ✅ MUST use JwtUtil (not hardcoded)
+        // ✅ DO NOT hardcode
         String token = jwtUtil.generateToken(user.getEmail(), user.getRole());
 
         return AuthResponse.builder()
@@ -57,12 +58,14 @@ public class UserServiceImpl implements UserService {
     @Override
     public User findById(Long id) {
         return repo.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("User not found"));
+                .orElseThrow(() ->
+                        new ResourceNotFoundException("User not found"));
     }
 
     @Override
     public User findByEmail(String email) {
         return repo.findByEmail(email)
-                .orElseThrow(() -> new ResourceNotFoundException("User not found"));
+                .orElseThrow(() ->
+                        new ResourceNotFoundException("User not found"));
     }
 }

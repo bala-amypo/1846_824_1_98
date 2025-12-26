@@ -7,7 +7,7 @@ public class AuthResponse {
     private String email;
     private String role;
 
-    // REQUIRED by Jackson
+    // REQUIRED for Jackson
     public AuthResponse() {
     }
 
@@ -18,34 +18,34 @@ public class AuthResponse {
         this.role = role;
     }
 
-    // 🔥 TESTS USE THIS
+    // ===== GETTERS (USED BY TESTS) =====
     public String getAccessToken() {
         return accessToken;
-    }
-
-    // 🔥 JACKSON NEEDS THIS
-    public void setAccessToken(String accessToken) {
-        this.accessToken = accessToken;
     }
 
     public Long getUserId() {
         return userId;
     }
 
-    public void setUserId(Long userId) {
-        this.userId = userId;
-    }
-
     public String getEmail() {
         return email;
     }
 
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
     public String getRole() {
         return role;
+    }
+
+    // ===== SETTERS (REQUIRED BY JACKSON) =====
+    public void setAccessToken(String accessToken) {
+        this.accessToken = accessToken;
+    }
+
+    public void setUserId(Long userId) {
+        this.userId = userId;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
     }
 
     public void setRole(String role) {

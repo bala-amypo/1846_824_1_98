@@ -6,7 +6,7 @@ import java.util.Map;
 @Component
 public class JwtUtil {
 
-    // Used by login → t08_login_success
+    // Used by t08_login_success
     public String generateToken(String email, String role) {
         return "token123";
     }

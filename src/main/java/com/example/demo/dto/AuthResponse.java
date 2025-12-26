@@ -1,13 +1,16 @@
 package com.example.demo.dto;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 public class AuthResponse {
 
+    // Main field used by Java tests
     private String accessToken;
+
     private Long userId;
     private String email;
     private String role;
 
-    // REQUIRED for Jackson
     public AuthResponse() {
     }
 
@@ -18,34 +21,45 @@ public class AuthResponse {
         this.role = role;
     }
 
-    // ===== GETTERS (USED BY TESTS) =====
+    // ===== REQUIRED BY TESTS =====
     public String getAccessToken() {
         return accessToken;
+    }
+
+    // ===== JSON ALIAS EXPECTED BY TESTS =====
+    @JsonProperty("token")
+    public String getToken() {
+        return accessToken;
+    }
+
+    @JsonProperty("token")
+    public void setToken(String token) {
+        this.accessToken = token;
+    }
+
+    // ===== NORMAL SETTERS FOR JACKSON =====
+    public void setAccessToken(String accessToken) {
+        this.accessToken = accessToken;
     }
 
     public Long getUserId() {
         return userId;
     }
 
-    public String getEmail() {
-        return email;
-    }
-
-    public String getRole() {
-        return role;
-    }
-
-    // ===== SETTERS (REQUIRED BY JACKSON) =====
-    public void setAccessToken(String accessToken) {
-        this.accessToken = accessToken;
-    }
-
     public void setUserId(Long userId) {
         this.userId = userId;
     }
 
+    public String getEmail() {
+        return email;
+    }
+
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    public String getRole() {
+        return role;
     }
 
     public void setRole(String role) {

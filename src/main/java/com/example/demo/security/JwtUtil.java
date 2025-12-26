@@ -11,7 +11,6 @@ import java.util.Date;
 @Component
 public class JwtUtil {
 
-    // ✅ SECRET KEY (DO NOT CHANGE RANDOMLY)
     private static final String SECRET =
             "sdjhgbwubwwbgwiub8QFQ8qg87G1bfewifbiuwg7iu8wefqhjk";
 
@@ -23,9 +22,7 @@ public class JwtUtil {
                 .setSubject(email)
                 .claim("role", role)
                 .setIssuedAt(new Date())
-                .setExpiration(
-                        new Date(System.currentTimeMillis() + 24 * 60 * 60 * 1000)
-                )
+                .setExpiration(new Date(System.currentTimeMillis() + 60 * 60 * 1000))
                 .signWith(key, SignatureAlgorithm.HS256)
                 .compact();
     }

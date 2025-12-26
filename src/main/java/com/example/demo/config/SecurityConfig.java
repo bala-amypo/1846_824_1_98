@@ -18,9 +18,14 @@ public class SecurityConfig {
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
 
         http
+            // ✅ REST APIs do NOT need CSRF
             .csrf(csrf -> csrf.disable())
+
+            // ✅ Disable default login pages
             .formLogin(form -> form.disable())
             .httpBasic(basic -> basic.disable())
+
+            // ✅ Allow auth + swagger without login
             .authorizeHttpRequests(auth -> auth
                 .requestMatchers(
                         "/auth/**",

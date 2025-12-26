@@ -24,7 +24,6 @@ public class UserServiceImpl implements UserService {
         this.jwtUtil = jwtUtil;
     }
 
-    // ✅ register success + duplicate email
     @Override
     public User register(User user) {
         if (repo.existsByEmail(user.getEmail())) {
@@ -34,7 +33,6 @@ public class UserServiceImpl implements UserService {
         return repo.save(user);
     }
 
-    // ✅ login success + bad password + DI mock
     @Override
     public AuthResponse login(String email, String password) {
 
@@ -45,8 +43,8 @@ public class UserServiceImpl implements UserService {
             throw new IllegalArgumentException("Invalid password");
         }
 
-        // 🔥 TEST EXPECTS THIS EXACT VALUE
-        String token = "token123";
+        // ✅ MUST use JwtUtil (not hardcoded)
+        String token = jwtUtil.generateToken(user.getEmail(), user.getRole());
 
         return AuthResponse.builder()
                 .accessToken(token)

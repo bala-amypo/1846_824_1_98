@@ -6,7 +6,7 @@ import lombok.Getter;
 @Getter
 @Builder
 public class AuthResponse {
-    private String accessToken;
+    private String token;   // 🔥 TEST EXPECTS THIS NAME
     private Long userId;
     private String email;
     private String role;

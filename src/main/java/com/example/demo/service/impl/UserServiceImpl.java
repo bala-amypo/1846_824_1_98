@@ -44,16 +44,15 @@ public class UserServiceImpl implements UserService {
             throw new IllegalArgumentException("Invalid password");
         }
 
-        // ✅ DO NOT hardcode
+        // ✅ token123
         String token = jwtUtil.generateToken(user.getEmail(), user.getRole());
 
         return AuthResponse.builder()
-        .token(token)     // 🔥 MUST BE token
-        .userId(user.getId())
-        .email(user.getEmail())
-        .role(user.getRole())
-        .build();
-
+                .accessToken(token)   // ✅ MUST BE accessToken
+                .userId(user.getId())
+                .email(user.getEmail())
+                .role(user.getRole())
+                .build();
     }
 
     @Override

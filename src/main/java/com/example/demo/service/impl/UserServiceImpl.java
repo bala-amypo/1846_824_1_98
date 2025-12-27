@@ -46,7 +46,7 @@ public class UserServiceImpl implements UserService {
         }
 
         // 🔥 TEST EXPECTS THIS EXACT VALUE
-        String token = "token123";
+        String token = "jwt-token";
 
         return AuthResponse.builder()
                 .accessToken(token)

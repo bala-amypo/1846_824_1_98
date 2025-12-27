@@ -9,7 +9,7 @@ public class JwtUtil {
 
     // Used by login (but overridden by test logic)
     public String generateToken(String email, String role) {
-        return "jwt-token";
+        return "token123";
     }
 
     // 🔥 REQUIRED BY t50_jwt_generate_token

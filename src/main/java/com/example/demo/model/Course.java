@@ -27,7 +27,7 @@ public class Course {
 
     @ManyToOne
     @JoinColumn(name = "instructor_id")
-    @JsonManagedReference   // ✅ FIX
+    @JsonManagedReference  
     private User instructor;
 
     private LocalDateTime createdAt;

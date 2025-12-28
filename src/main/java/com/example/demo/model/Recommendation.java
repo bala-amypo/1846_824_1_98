@@ -1,5 +1,6 @@
 package com.example.demo.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -19,6 +20,7 @@ public class Recommendation {
     private Long id;
 
     @ManyToOne
+    @JsonBackReference  
     private User user;
 
     private LocalDateTime generatedAt;

@@ -1,5 +1,6 @@
 package com.example.demo.model;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -26,11 +27,13 @@ public class Course {
 
     @ManyToOne
     @JoinColumn(name = "instructor_id")
+    @JsonManagedReference   // ✅ FIX
     private User instructor;
 
     private LocalDateTime createdAt;
 
     @OneToMany(mappedBy = "course")
+    @JsonManagedReference  
     private List<MicroLesson> microLessons;
 
     @PrePersist

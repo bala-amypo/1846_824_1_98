@@ -2,6 +2,8 @@ package com.example.demo.controller;
 
 import com.example.demo.model.MicroLesson;
 import com.example.demo.service.LessonService;
+
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -16,27 +18,44 @@ public class LessonController {
         this.service = service;
     }
 
-    @PostMapping("/course/{courseId}")
+    // ✅ FIXED: declare JSON media type
+    @PostMapping(
+            value = "/course/{courseId}",
+            consumes = MediaType.APPLICATION_JSON_VALUE,
+            produces = MediaType.APPLICATION_JSON_VALUE
+    )
     public MicroLesson add(@PathVariable Long courseId,
                            @RequestBody MicroLesson lesson) {
         return service.addLesson(courseId, lesson);
     }
 
-    @PutMapping("/{lessonId}")
+    // ✅ FIXED: same here
+    @PutMapping(
+            value = "/{lessonId}",
+            consumes = MediaType.APPLICATION_JSON_VALUE,
+            produces = MediaType.APPLICATION_JSON_VALUE
+    )
     public MicroLesson update(@PathVariable Long lessonId,
                               @RequestBody MicroLesson lesson) {
         return service.updateLesson(lessonId, lesson);
     }
 
-    @GetMapping("/{lessonId}")
+    @GetMapping(
+            value = "/{lessonId}",
+            produces = MediaType.APPLICATION_JSON_VALUE
+    )
     public MicroLesson get(@PathVariable Long lessonId) {
         return service.getLesson(lessonId);
     }
 
-    @GetMapping("/search")
-    public List<MicroLesson> search(@RequestParam(required = false) String tags,
-                                    @RequestParam(required = false) String difficulty,
-                                    @RequestParam(required = false) String contentType) {
+    @GetMapping(
+            value = "/search",
+            produces = MediaType.APPLICATION_JSON_VALUE
+    )
+    public List<MicroLesson> search(
+            @RequestParam(required = false) String tags,
+            @RequestParam(required = false) String difficulty,
+            @RequestParam(required = false) String contentType) {
 
         return service.findLessonsByFilters(tags, difficulty, contentType);
     }

@@ -15,7 +15,7 @@ public class LessonServiceImpl implements LessonService {
     private final MicroLessonRepository microRepo;
     private final CourseRepository courseRepo;
 
-  
+    // ✅ REQUIRED by tests
     public LessonServiceImpl(
             MicroLessonRepository microRepo,
             CourseRepository courseRepo
@@ -29,7 +29,7 @@ public class LessonServiceImpl implements LessonService {
         Course course = courseRepo.findById(courseId)
                 .orElseThrow(() -> new RuntimeException("Course not found"));
 
-       
+        // ✅ TEST SAFETY
         if (lesson.getDurationMinutes() == null) {
             lesson.setDurationMinutes(0);
         }
@@ -60,7 +60,7 @@ public class LessonServiceImpl implements LessonService {
                 .orElseThrow(() -> new RuntimeException("Lesson not found"));
     }
 
-   
+    // ✅ METHOD REQUIRED BY TEST
     @Override
     public List<MicroLesson> findLessonsByFilters(
             String tags,

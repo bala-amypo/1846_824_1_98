@@ -9,7 +9,8 @@ import java.util.List;
 
 @Entity
 @Table(name = "courses")
-@Getter @Setter
+@Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
@@ -25,15 +26,16 @@ public class Course {
     private String description;
     private String category;
 
+    // ❌ REMOVE JsonManagedReference here
     @ManyToOne
-    @JoinColumn(name = "instructor_id")
-    @JsonManagedReference  
+    @JoinColumn(name = "instructor_id", nullable = false)
     private User instructor;
 
     private LocalDateTime createdAt;
 
-    @OneToMany(mappedBy = "course")
-    @JsonManagedReference  
+    // ✅ Parent side → JsonManagedReference
+    @OneToMany(mappedBy = "course", cascade = CascadeType.ALL)
+    @JsonManagedReference
     private List<MicroLesson> microLessons;
 
     @PrePersist

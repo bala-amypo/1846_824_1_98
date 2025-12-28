@@ -27,7 +27,6 @@ public class UserServiceImpl implements UserService {
         this.jwtUtil = jwtUtil;
     }
 
-    // ✅ register success + duplicate email
     @Override
     public User register(User user) {
         if (user == null) {
@@ -42,7 +41,6 @@ public class UserServiceImpl implements UserService {
         return repo.save(user);
     }
 
-    // ✅ login success + bad password + JWT tests
     @Override
     public AuthResponse login(String email, String password) {
 
@@ -54,7 +52,6 @@ public class UserServiceImpl implements UserService {
             throw new IllegalArgumentException("Invalid password");
         }
 
-        // 🔥 THIS IS THE KEY FIX (Mockito controls return value)
         Map<String, Object> claims = new HashMap<>();
         claims.put("role", user.getRole());
 

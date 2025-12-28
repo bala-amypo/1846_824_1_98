@@ -1,5 +1,6 @@
 package com.example.demo.controller;
 
+import com.example.demo.dto.LessonRequest;
 import com.example.demo.model.MicroLesson;
 import com.example.demo.service.LessonService;
 
@@ -18,25 +19,45 @@ public class LessonController {
         this.service = service;
     }
 
-    // ✅ FIXED: declare JSON media type
+    // ✅ FIXED: DTO for input, Entity for output
     @PostMapping(
             value = "/course/{courseId}",
             consumes = MediaType.APPLICATION_JSON_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE
     )
-    public MicroLesson add(@PathVariable Long courseId,
-                           @RequestBody MicroLesson lesson) {
+    public MicroLesson add(
+            @PathVariable Long courseId,
+            @RequestBody LessonRequest request) {
+
+        MicroLesson lesson = new MicroLesson();
+        lesson.setTitle(request.getTitle());
+        lesson.setDurationMinutes(request.getDurationMinutes());
+        lesson.setContentType(request.getContentType());
+        lesson.setDifficulty(request.getDifficulty());
+        lesson.setTags(request.getTags());
+        lesson.setPublishDate(request.getPublishDate());
+
         return service.addLesson(courseId, lesson);
     }
 
-    // ✅ FIXED: same here
+    // ✅ PUT also fixed
     @PutMapping(
             value = "/{lessonId}",
             consumes = MediaType.APPLICATION_JSON_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE
     )
-    public MicroLesson update(@PathVariable Long lessonId,
-                              @RequestBody MicroLesson lesson) {
+    public MicroLesson update(
+            @PathVariable Long lessonId,
+            @RequestBody LessonRequest request) {
+
+        MicroLesson lesson = new MicroLesson();
+        lesson.setTitle(request.getTitle());
+        lesson.setDurationMinutes(request.getDurationMinutes());
+        lesson.setContentType(request.getContentType());
+        lesson.setDifficulty(request.getDifficulty());
+        lesson.setTags(request.getTags());
+        lesson.setPublishDate(request.getPublishDate());
+
         return service.updateLesson(lessonId, lesson);
     }
 

@@ -1,6 +1,7 @@
 package com.example.demo.controller;
 
-import com.example.demo.dto.*;
+import com.example.demo.dto.AuthRequest;
+import com.example.demo.dto.AuthResponse;
 import com.example.demo.model.User;
 import com.example.demo.service.UserService;
 import org.springframework.http.MediaType;
@@ -21,7 +22,15 @@ public class AuthController {
         consumes = MediaType.APPLICATION_JSON_VALUE,
         produces = MediaType.APPLICATION_JSON_VALUE
     )
-    public User register(@RequestBody User user) {
+    public User register(@RequestBody AuthRequest request) {
+
+        User user = new User();
+        user.setFullName(request.getFullName());
+        user.setEmail(request.getEmail());
+        user.setPassword(request.getPassword());
+        user.setRole(request.getRole());
+        user.setPreferredLearningStyle(request.getPreferredLearningStyle());
+
         return service.register(user);
     }
 

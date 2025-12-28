@@ -2,9 +2,8 @@ package com.example.demo.controller;
 
 import com.example.demo.model.Course;
 import com.example.demo.service.CourseService;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @RestController
 @RequestMapping("/courses")
@@ -16,25 +15,43 @@ public class CourseController {
         this.service = service;
     }
 
-    @PostMapping("/{instructorId}")
-    public Course create(@PathVariable Long instructorId,
-                         @RequestBody Course course) {
-        return service.createCourse(course, instructorId);
+    // 🔹 CREATE COURSE (FIXED 415 HERE)
+    @PostMapping(
+        value = "/{instructorId}",
+        consumes = MediaType.APPLICATION_JSON_VALUE,
+        produces = MediaType.APPLICATION_JSON_VALUE
+    )
+    public Course createCourse(
+            @PathVariable Long instructorId,
+            @RequestBody Course course
+    ) {
+        return service.createCourse(instructorId, course);
     }
 
-    @PutMapping("/{courseId}")
-    public Course update(@PathVariable Long courseId,
-                         @RequestBody Course course) {
+    // 🔹 GET COURSE BY ID
+    @GetMapping("/{courseId}")
+    public Course getCourseById(@PathVariable Long courseId) {
+        return service.getCourseById(courseId);
+    }
+
+    // 🔹 UPDATE COURSE
+    @PutMapping(
+        value = "/{courseId}",
+        consumes = MediaType.APPLICATION_JSON_VALUE,
+        produces = MediaType.APPLICATION_JSON_VALUE
+    )
+    public Course updateCourse(
+            @PathVariable Long courseId,
+            @RequestBody Course course
+    ) {
         return service.updateCourse(courseId, course);
     }
 
-    @GetMapping("/{courseId}")
-    public Course get(@PathVariable Long courseId) {
-        return service.getCourse(courseId);
-    }
-
+    // 🔹 GET COURSES BY INSTRUCTOR
     @GetMapping("/instructor/{instructorId}")
-    public List<Course> list(@PathVariable Long instructorId) {
-        return service.listCoursesByInstructor(instructorId);
+    public java.util.List<Course> getCoursesByInstructor(
+            @PathVariable Long instructorId
+    ) {
+        return service.getCoursesByInstructor(instructorId);
     }
 }

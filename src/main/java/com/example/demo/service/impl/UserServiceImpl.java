@@ -9,6 +9,9 @@ import com.example.demo.service.UserService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.HashMap;
+import java.util.Map;
+
 @Service
 public class UserServiceImpl implements UserService {
 
@@ -27,26 +30,35 @@ public class UserServiceImpl implements UserService {
     // ✅ register success + duplicate email
     @Override
     public User register(User user) {
+        if (user == null) {
+            throw new IllegalArgumentException("User cannot be null");
+        }
+
         if (repo.existsByEmail(user.getEmail())) {
             throw new IllegalArgumentException("Email already exists");
         }
+
         user.setPassword(encoder.encode(user.getPassword()));
         return repo.save(user);
     }
 
-    // ✅ login success + bad password + DI mock
+    // ✅ login success + bad password + JWT tests
     @Override
     public AuthResponse login(String email, String password) {
 
         User user = repo.findByEmail(email)
-                .orElseThrow(() -> new ResourceNotFoundException("User not found"));
+                .orElseThrow(() ->
+                        new ResourceNotFoundException("User not found"));
 
         if (!encoder.matches(password, user.getPassword())) {
             throw new IllegalArgumentException("Invalid password");
         }
 
-        // 🔥 TEST EXPECTS THIS EXACT VALUE
-        String token = "jwt-token";
+        // 🔥 THIS IS THE KEY FIX (Mockito controls return value)
+        Map<String, Object> claims = new HashMap<>();
+        claims.put("role", user.getRole());
+
+        String token = jwtUtil.generateToken(claims, user.getEmail());
 
         return AuthResponse.builder()
                 .accessToken(token)
@@ -59,12 +71,14 @@ public class UserServiceImpl implements UserService {
     @Override
     public User findById(Long id) {
         return repo.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("User not found"));
+                .orElseThrow(() ->
+                        new ResourceNotFoundException("User not found"));
     }
 
     @Override
     public User findByEmail(String email) {
         return repo.findByEmail(email)
-                .orElseThrow(() -> new ResourceNotFoundException("User not found"));
+                .orElseThrow(() ->
+                        new ResourceNotFoundException("User not found"));
     }
 }

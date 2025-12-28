@@ -1,5 +1,7 @@
 package com.example.demo.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -8,7 +10,8 @@ import java.util.List;
 
 @Entity
 @Table(name = "users")
-@Getter @Setter
+@Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
@@ -23,6 +26,8 @@ public class User {
     @Column(unique = true, nullable = false)
     private String email;
 
+    // 🔒 NEVER expose password in JSON
+    @JsonIgnore
     @Column(nullable = false)
     private String password;
 
@@ -32,7 +37,9 @@ public class User {
 
     private LocalDateTime createdAt;
 
+    // 🔁 Prevent Course → User → Course loop
     @OneToMany(mappedBy = "instructor")
+    @JsonBackReference
     private List<Course> courses;
 
     @OneToMany(mappedBy = "user")

@@ -1,6 +1,5 @@
 package com.example.demo.model;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -20,15 +19,14 @@ public class Progress {
     private Long id;
 
     @ManyToOne
-    @JsonBackReference 
     private User user;
 
     @ManyToOne
-    @JsonBackReference   
     private MicroLesson microLesson;
 
     private String status;
     private Integer progressPercent;
+
     private LocalDateTime lastAccessedAt;
     private BigDecimal score;
 

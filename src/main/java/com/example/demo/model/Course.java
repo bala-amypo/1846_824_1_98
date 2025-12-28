@@ -1,6 +1,5 @@
 package com.example.demo.model;
 
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -9,8 +8,7 @@ import java.util.List;
 
 @Entity
 @Table(name = "courses")
-@Getter
-@Setter
+@Getter @Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
@@ -26,16 +24,13 @@ public class Course {
     private String description;
     private String category;
 
-    // ❌ REMOVE JsonManagedReference here
     @ManyToOne
-    @JoinColumn(name = "instructor_id", nullable = false)
+    @JoinColumn(name = "instructor_id")
     private User instructor;
 
     private LocalDateTime createdAt;
 
-    // ✅ Parent side → JsonManagedReference
-    @OneToMany(mappedBy = "course", cascade = CascadeType.ALL)
-    @JsonManagedReference
+    @OneToMany(mappedBy = "course")
     private List<MicroLesson> microLessons;
 
     @PrePersist

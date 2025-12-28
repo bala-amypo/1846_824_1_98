@@ -1,7 +1,5 @@
 package com.example.demo.model;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -21,7 +19,9 @@ public class MicroLesson {
     private Long id;
 
     private String title;
+
     private Integer durationMinutes;
+
     private String contentType;
     private String difficulty;
     private String tags;
@@ -30,10 +30,8 @@ public class MicroLesson {
 
     @ManyToOne
     @JoinColumn(name = "course_id")
-    @JsonBackReference  
     private Course course;
 
     @OneToMany(mappedBy = "microLesson")
-    @JsonManagedReference 
     private List<Progress> progressList;
 }

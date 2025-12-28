@@ -2,6 +2,7 @@ package com.example.demo.controller;
 
 import com.example.demo.model.Course;
 import com.example.demo.service.CourseService;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -16,24 +17,40 @@ public class CourseController {
         this.service = service;
     }
 
-    @PostMapping("/{instructorId}")
+    // ✅ FIX: declare media types
+    @PostMapping(
+            value = "/{instructorId}",
+            consumes = MediaType.APPLICATION_JSON_VALUE,
+            produces = MediaType.APPLICATION_JSON_VALUE
+    )
     public Course create(@PathVariable Long instructorId,
                          @RequestBody Course course) {
         return service.createCourse(course, instructorId);
     }
 
-    @PutMapping("/{courseId}")
+    // ✅ FIX: same for PUT
+    @PutMapping(
+            value = "/{courseId}",
+            consumes = MediaType.APPLICATION_JSON_VALUE,
+            produces = MediaType.APPLICATION_JSON_VALUE
+    )
     public Course update(@PathVariable Long courseId,
                          @RequestBody Course course) {
         return service.updateCourse(courseId, course);
     }
 
-    @GetMapping("/{courseId}")
+    @GetMapping(
+            value = "/{courseId}",
+            produces = MediaType.APPLICATION_JSON_VALUE
+    )
     public Course get(@PathVariable Long courseId) {
         return service.getCourse(courseId);
     }
 
-    @GetMapping("/instructor/{instructorId}")
+    @GetMapping(
+            value = "/instructor/{instructorId}",
+            produces = MediaType.APPLICATION_JSON_VALUE
+    )
     public List<Course> list(@PathVariable Long instructorId) {
         return service.listCoursesByInstructor(instructorId);
     }

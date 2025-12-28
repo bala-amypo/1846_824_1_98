@@ -5,6 +5,8 @@ import com.example.demo.service.CourseService;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/courses")
 public class CourseController {
@@ -15,7 +17,7 @@ public class CourseController {
         this.service = service;
     }
 
-    // 🔹 CREATE COURSE (FIXED 415 HERE)
+    // CREATE COURSE
     @PostMapping(
         value = "/{instructorId}",
         consumes = MediaType.APPLICATION_JSON_VALUE,
@@ -28,13 +30,13 @@ public class CourseController {
         return service.createCourse(instructorId, course);
     }
 
-    // 🔹 GET COURSE BY ID
+    // GET COURSE BY ID
     @GetMapping("/{courseId}")
-    public Course getCourseById(@PathVariable Long courseId) {
+    public Course getCourse(@PathVariable Long courseId) {
         return service.getCourseById(courseId);
     }
 
-    // 🔹 UPDATE COURSE
+    // UPDATE COURSE
     @PutMapping(
         value = "/{courseId}",
         consumes = MediaType.APPLICATION_JSON_VALUE,
@@ -47,11 +49,11 @@ public class CourseController {
         return service.updateCourse(courseId, course);
     }
 
-    // 🔹 GET COURSES BY INSTRUCTOR
+    // GET COURSES BY INSTRUCTOR
     @GetMapping("/instructor/{instructorId}")
-    public java.util.List<Course> getCoursesByInstructor(
+    public List<Course> getCoursesByInstructor(
             @PathVariable Long instructorId
     ) {
-        return service.getCoursesByInstructor(instructorId);
+        return service.listCoursesByInstructor(instructorId);
     }
 }

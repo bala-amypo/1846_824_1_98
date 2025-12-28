@@ -1,5 +1,6 @@
 package com.example.demo.controller;
 
+import com.example.demo.dto.CourseRequest;
 import com.example.demo.model.Course;
 import com.example.demo.service.CourseService;
 import org.springframework.http.MediaType;
@@ -17,7 +18,7 @@ public class CourseController {
         this.service = service;
     }
 
-    // CREATE COURSE
+    // ✅ CREATE COURSE (NO JWT REQUIRED)
     @PostMapping(
         value = "/{instructorId}",
         consumes = MediaType.APPLICATION_JSON_VALUE,
@@ -25,18 +26,21 @@ public class CourseController {
     )
     public Course createCourse(
             @PathVariable Long instructorId,
-            @RequestBody Course course
+            @RequestBody CourseRequest request
     ) {
+        Course course = new Course();
+        course.setTitle(request.getTitle());
+        course.setDescription(request.getDescription());
+        course.setCategory(request.getCategory());
+
         return service.createCourse(instructorId, course);
     }
 
-    // GET COURSE BY ID
     @GetMapping("/{courseId}")
     public Course getCourse(@PathVariable Long courseId) {
         return service.getCourseById(courseId);
     }
 
-    // UPDATE COURSE
     @PutMapping(
         value = "/{courseId}",
         consumes = MediaType.APPLICATION_JSON_VALUE,
@@ -44,12 +48,16 @@ public class CourseController {
     )
     public Course updateCourse(
             @PathVariable Long courseId,
-            @RequestBody Course course
+            @RequestBody CourseRequest request
     ) {
+        Course course = new Course();
+        course.setTitle(request.getTitle());
+        course.setDescription(request.getDescription());
+        course.setCategory(request.getCategory());
+
         return service.updateCourse(courseId, course);
     }
 
-    // GET COURSES BY INSTRUCTOR
     @GetMapping("/instructor/{instructorId}")
     public List<Course> getCoursesByInstructor(
             @PathVariable Long instructorId

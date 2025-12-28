@@ -1,11 +1,12 @@
 package com.example.demo.service;
 
 import com.example.demo.model.Course;
+
 import java.util.List;
 
 public interface CourseService {
 
-    Course createCourse(Long instructorId, Course course);
+    Course createCourse(Course course, Long instructorId);
 
     Course getCourseById(Long courseId);
 

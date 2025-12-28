@@ -1,81 +1,67 @@
 package com.example.demo.service.impl;
 
-import com.example.demo.dto.AuthResponse;
-import com.example.demo.exception.ResourceNotFoundException;
+import com.example.demo.model.Course;
 import com.example.demo.model.User;
+import com.example.demo.repository.CourseRepository;
 import com.example.demo.repository.UserRepository;
-import com.example.demo.security.JwtUtil;
-import com.example.demo.service.UserService;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import com.example.demo.service.CourseService;
 import org.springframework.stereotype.Service;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.List;
 
 @Service
-public class UserServiceImpl implements UserService {
+public class CourseServiceImpl implements CourseService {
 
-    private final UserRepository repo;
-    private final BCryptPasswordEncoder encoder;
-    private final JwtUtil jwtUtil;
+    private final CourseRepository courseRepo;
+    private final UserRepository userRepo;
 
-    public UserServiceImpl(UserRepository repo,
-                           BCryptPasswordEncoder encoder,
-                           JwtUtil jwtUtil) {
-        this.repo = repo;
-        this.encoder = encoder;
-        this.jwtUtil = jwtUtil;
+    public CourseServiceImpl(CourseRepository courseRepo,
+                             UserRepository userRepo) {
+        this.courseRepo = courseRepo;
+        this.userRepo = userRepo;
     }
 
     @Override
-    public User register(User user) {
-        if (user == null) {
-            throw new IllegalArgumentException("User cannot be null");
+    public Course createCourse(Course course, Long instructorId) {
+
+        // 1️⃣ Instructor must exist
+        User instructor = userRepo.findById(instructorId)
+                .orElseThrow(() -> new RuntimeException("Instructor not found"));
+
+        // 2️⃣ Role must be INSTRUCTOR
+        if (!"INSTRUCTOR".equals(instructor.getRole())) {
+            throw new RuntimeException("User is not an instructor");
         }
 
-        if (repo.existsByEmail(user.getEmail())) {
-            throw new IllegalArgumentException("Email already exists");
+        // 3️⃣ Duplicate title check
+        if (courseRepo.existsByTitleAndInstructorId(course.getTitle(), instructorId)) {
+            throw new RuntimeException("Course title already exists");
         }
 
-        user.setPassword(encoder.encode(user.getPassword()));
-        return repo.save(user);
+        course.setInstructor(instructor);
+        return courseRepo.save(course);
     }
 
     @Override
-    public AuthResponse login(String email, String password) {
-
-        User user = repo.findByEmail(email)
-                .orElseThrow(() ->
-                        new ResourceNotFoundException("User not found"));
-
-        if (!encoder.matches(password, user.getPassword())) {
-            throw new IllegalArgumentException("Invalid password");
-        }
-
-        Map<String, Object> claims = new HashMap<>();
-        claims.put("role", user.getRole());
-
-        String token = jwtUtil.generateToken(claims, user.getEmail());
-
-        return AuthResponse.builder()
-                .accessToken(token)
-                .userId(user.getId())
-                .email(user.getEmail())
-                .role(user.getRole())
-                .build();
+    public Course getCourseById(Long courseId) {
+        return courseRepo.findById(courseId)
+                .orElseThrow(() -> new RuntimeException("Course not found"));
     }
 
     @Override
-    public User findById(Long id) {
-        return repo.findById(id)
-                .orElseThrow(() ->
-                        new ResourceNotFoundException("User not found"));
+    public Course updateCourse(Long courseId, Course updatedCourse) {
+
+        Course existing = getCourseById(courseId);
+
+        existing.setTitle(updatedCourse.getTitle());
+        existing.setDescription(updatedCourse.getDescription());
+        existing.setCategory(updatedCourse.getCategory());
+
+        return courseRepo.save(existing);
     }
 
     @Override
-    public User findByEmail(String email) {
-        return repo.findByEmail(email)
-                .orElseThrow(() ->
-                        new ResourceNotFoundException("User not found"));
+    public List<Course> listCoursesByInstructor(Long instructorId) {
+        return courseRepo.findByInstructor_Id(instructorId);
     }
 }

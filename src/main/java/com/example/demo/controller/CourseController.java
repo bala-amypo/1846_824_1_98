@@ -1,7 +1,9 @@
 package com.example.demo.controller;
 
+import com.example.demo.dto.CourseRequest;
 import com.example.demo.model.Course;
 import com.example.demo.service.CourseService;
+
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
@@ -17,25 +19,35 @@ public class CourseController {
         this.service = service;
     }
 
-    // ✅ FIX: declare media types
     @PostMapping(
             value = "/{instructorId}",
             consumes = MediaType.APPLICATION_JSON_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE
     )
     public Course create(@PathVariable Long instructorId,
-                         @RequestBody Course course) {
+                         @RequestBody CourseRequest request) {
+
+        Course course = new Course();
+        course.setTitle(request.getTitle());
+        course.setDescription(request.getDescription());
+        course.setCategory(request.getCategory());
+
         return service.createCourse(course, instructorId);
     }
 
-    // ✅ FIX: same for PUT
     @PutMapping(
             value = "/{courseId}",
             consumes = MediaType.APPLICATION_JSON_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE
     )
     public Course update(@PathVariable Long courseId,
-                         @RequestBody Course course) {
+                         @RequestBody CourseRequest request) {
+
+        Course course = new Course();
+        course.setTitle(request.getTitle());
+        course.setDescription(request.getDescription());
+        course.setCategory(request.getCategory());
+
         return service.updateCourse(courseId, course);
     }
 

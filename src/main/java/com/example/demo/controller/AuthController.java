@@ -36,7 +36,7 @@ public class AuthController {
         return userService.register(user);
     }
 
-    // ================= LOGIN =================
+
     @PostMapping(
             value = "/login",
             consumes = MediaType.APPLICATION_JSON_VALUE,
